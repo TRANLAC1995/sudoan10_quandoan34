@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản lý tư tưởng quân nhân - Nâng cấp</title>
+<style>
+:root{
+  --primary:#007bff;
+  --secondary:#1e3c72;
+  --success:#28a745;
+  --warning:#ffc107;
+  --danger:#dc3545;
+  --bg:#f0f8ff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;padding:20px;background:var(--bg);}
+header{
+  background:rgba(255,255,255,.9);
+  padding:20px;
+  padding-bottom:35px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  position:relative;
+}
+header h1{color:var(--primary);margin-bottom:8px;}
+section{max-width:1100px;margin:30px auto;}
+.grid-lessons{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.square-lesson{background:rgba(255,255,255,.8);border-radius:20px;text-align:center;padding:25px 10px;cursor:pointer;transition:transform .3s,box-shadow .3s,background .3s;}
+.square-lesson:hover{transform:translateY(-8px);box-shadow:0 8px 25px rgba(0,0,0,.2);background:rgba(255,255,255,1);}
+.icon{font-size:2.3rem;}
+.square-lesson p{font-weight:bold;}
+#lesson-content{margin-top:20px;background:rgba(255,255,255,.8);padding:20px;border-radius:15px;min-height:200px;}
+input,select,textarea{width:100%;padding:8px;margin:5px 0 10px;border-radius:6px;border:1px solid #ccc;}
+button{background:var(--secondary);color:#fff;border:none;border-radius:10px;padding:7px 12px;margin:3px;cursor:pointer;transition:.3s;}
+button:hover{background:#2a5298;}
+table{width:100%;border-collapse:collapse;margin-top:10px;}
+th,td{border:1px solid #ccc;padding:8px;text-align:left;}
+th{background:#eaf2ff;}
+@media(max-width:1000px){.grid-lessons{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:700px){.grid-lessons{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.grid-lessons{grid-template-columns:1fr);}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>QUẢN LÝ TƯ TƯỞNG</h1>
+  <div style="margin-top:8px;">
+    <button onclick="window.location.href='index.html'">⬅ Quay lại</button>
+  </div>
+</header>
+
+<section>
+<div class="grid-lessons">
+  <div class="square-lesson" onclick="hoso()"><div class="icon">📁</div><p>Hồ sơ<br>quân nhân</p></div>
+  <div class="square-lesson" onclick="theoDoiTuTuong()"><div class="icon">🧠</div><p>Theo dõi<br>tư tưởng</p></div>
+  <div class="square-lesson" onclick="khaosat()"><div class="icon">📝</div><p>Phiếu khảo sát<br>tư tưởng</p></div>
+  <div class="square-lesson" onclick="canhbao()"><div class="icon">⚠️</div><p>Phân tích<br>cảnh báo</p></div>
+  <div class="square-lesson" onclick="baocao()"><div class="icon">📊</div><p>Báo cáo<br>thống kê</p></div>
+  <div class="square-lesson" onclick="excelView()"><div class="icon">💾</div><p>Danh sách &<br>Xuất Excel</p></div>
+</div>
+
+<div id="lesson-content">
+<h2>Giới thiệu</h2>
+<p>Chọn chức năng phía trên để sử dụng hệ thống.</p>
+</div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let indexSua=-1,indexKhaoSat=-1;
+
+// ---------------- 1️⃣ Hồ sơ quân nhân ----------------
+function hoso(){
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  let options = ds.map((h,i)=>`<option value="${i}">${h.hoten}</option>`).join('');
+  document.getElementById("lesson-content").innerHTML=`
+  <h2>Hồ sơ quân nhân</h2>
+  <label>Họ tên</label><input id="hoten" placeholder="Nhập họ tên">
+  <label>Giới tính</label>
+  <select id="gioitinh"><option value="Nam">Nam</option><option value="Nữ">Nữ</option></select>
+  <label>Ngày sinh</label><input id="ngaysinh" type="date">
+  <label>Cấp bậc</label><input id="capbac">
+  <label>Chức vụ</label><input id="chucvu">
+  <label>Đơn vị</label><input id="donvi">
+  <label>Nhận xét tư tưởng</label><textarea id="nhanxet" rows="2"></textarea>
+  <label>Lịch sử khen thưởng/kỷ luật</label><textarea id="lichsu" rows="2"></textarea>
+  <button onclick="luuHoSo()">Lưu</button>
+
+  <h3>Khảo sát tư tưởng quân nhân đã lưu</h3>
+  <select id="chonNhanVien"><option value="">--Chọn quân nhân--</option>${options}</select>
+  <button onclick="chonKhaoSatDropdown()">Khảo sát</button>
+  `;
+}
+
+// ====================== Lưu hồ sơ & gửi lên Sheets ======================
+function luuHoSo(){
+  let hs = {
+    hoten: hoten.value,
+    gioitinh: gioitinh.value,
+    ngaysinh: ngaysinh.value,
+    capbac: capbac.value,
+    chucvu: chucvu.value,
+    donvi: donvi.value,
+    nhanxet: nhanxet.value,
+    lichsu: lichsu.value,
+    diem: null,
+    ketqua: null,
+    theoDoi: [] // mảng lưu điểm theo ngày
+  };
+
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  if(indexSua == -1) ds.push(hs); else ds[indexSua] = hs;
+  localStorage.setItem("hosoQN", JSON.stringify(ds));
+  indexSua = -1;
+
+  fetch("https://script.google.com/macros/s/AKfycbzEPb6s06uc6OeVpfkspSSnITZBS04ObtHXYXT6YNjFdqUGubrkOjVHnNCU8p7aaAXNEw/exec", {
+    method: "POST",
+    body: JSON.stringify(hs),
+    headers: { "Content-Type": "application/json" }
+  }).then(res=>res.json())
+  .then(data=>{if(data.status==="ok") console.log("✅ Lưu lên Google Sheets thành công!"); else console.warn("⚠ Lỗi khi lưu lên Sheets:",data.message);})
+  .catch(err=>console.error("⚠ Lỗi kết nối:", err.message));
+
+  excelView();
+}
+
+// ---------------- 2️⃣ Phiếu khảo sát ----------------
+function chonKhaoSatDropdown(){
+  let index = document.getElementById("chonNhanVien").value;
+  if(index === ""){alert("Vui lòng chọn quân nhân!");return;}
+  indexKhaoSat = +index;
+  khaosat();
+}
+
+function chonKhaoSat(i){indexKhaoSat=i;khaosat();}
+function khaosat(){
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  let target = (indexKhaoSat != -1) ? ds[indexKhaoSat] : null;
+
+  document.getElementById("lesson-content").innerHTML = `
+  <h2>Phiếu khảo sát tư tưởng 10 câu</h2>
+  <p>Quân nhân: <b>${target ? target.hoten : "(Chưa chọn)"}</b></p>
+
+  <ol>
+    <li>Tinh thần công tác
+      <select id="q1">
+        <option value="3">Tốt</option>
+        <option value="2">Bình thường</option>
+        <option value="1">Chưa tốt</option>
+      </select>
+    </li>
+    <li>Kỷ luật
+      <select id="q2">
+        <option value="3">Tốt</option>
+        <option value="2">Bình thường</option>
+        <option value="1">Chưa tốt</option>
+      </select>
+    </li>
+    <li>Tâm lý
+      <select id="q3">
+        <option value="3">Ổn định</option>
+        <option value="2">Khó khăn</option>
+        <option value="1">Bất ổn</option>
+      </select>
+    </li>
+    <li>Học tập/Đào tạo
+      <select id="q4">
+        <option value="3">Tốt</option>
+        <option value="2">Trung bình</option>
+        <option value="1">Chưa đạt</option>
+      </select>
+    </li>
+    <li>Quan hệ đồng đội
+      <select id="q5">
+        <option value="3">Tốt</option>
+        <option value="2">Bình thường</option>
+        <option value="1">Cần cải thiện</option>
+      </select>
+    </li>
+    <li>Chấp hành mệnh lệnh cấp trên
+      <select id="q6">
+        <option value="3">Tốt</option>
+        <option value="2">Bình thường</option>
+        <option value="1">Cần cải thiện</option>
+      </select>
+    </li>
+    <li>Động lực công việc
+      <select id="q7">
+        <option value="3">Cao</option>
+        <option value="2">Trung bình</option>
+        <option value="1">Thấp</option>
+      </select>
+    </li>
+    <li>Ý thức an toàn, phòng chống rủi ro
+      <select id="q8">
+        <option value="3">Tốt</option>
+        <option value="2">Trung bình</option>
+        <option value="1">Cần cải thiện</option>
+      </select>
+    </li>
+    <li>Tinh thần phục vụ cộng đồng
+      <select id="q9">
+        <option value="3">Tích cực</option>
+        <option value="2">Bình thường</option>
+        <option value="1">Chưa tích cực</option>
+      </select>
+    </li>
+    <li>Quản lý stress, xung đột
+      <select id="q10">
+        <option value="3">Tốt</option>
+        <option value="2">Trung bình</option>
+        <option value="1">Cần hỗ trợ</option>
+      </select>
+    </li>
+  </ol>
+
+  <button onclick="tinhDiem()">Chấm điểm</button>
+  <p id="ketqua"></p>
+  `;
+}
+
+// Hàm tính điểm 10 câu
+function tinhDiem10(){
+  let d = +q1.value + +q2.value + +q3.value + +q4.value + +q5.value +
+          +q6.value + +q7.value + +q8.value + +q9.value + +q10.value;
+  // Xếp loại
+  let kq = d >= 25 ? "Ổn định" : d >= 15 ? "Cần theo dõi" : "Cảnh báo";
+
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  if(indexKhaoSat != -1){
+    ds[indexKhaoSat].diem = d;
+    ds[indexKhaoSat].ketqua = kq;
+    localStorage.setItem("hosoQN", JSON.stringify(ds));
+  }
+
+  document.getElementById("ketqua").innerHTML = `Điểm: ${d} → <b>${kq}</b>`;
+}
+
+
+function tinhDiem(){
+  // Lấy giá trị trực tiếp từ các select bằng getElementById
+  let q1v = +document.getElementById("q1").value;
+  let q2v = +document.getElementById("q2").value;
+  let q3v = +document.getElementById("q3").value;
+  let q4v = +document.getElementById("q4").value;
+  let q5v = +document.getElementById("q5").value;
+  let q6v = +document.getElementById("q6").value;
+  let q7v = +document.getElementById("q7").value;
+  let q8v = +document.getElementById("q8").value;
+  let q9v = +document.getElementById("q9").value;
+  let q10v = +document.getElementById("q10").value;
+
+  // Tổng điểm mới thang 30
+  let d = q1v + q2v + q3v + q4v + q5v + q6v + q7v + q8v + q9v + q10v;
+  
+  // Phân loại theo thang 30 điểm
+  let kq = d >= 25 ? "Ổn định" : d >= 15 ? "Cần theo dõi" : "Cảnh báo";
+
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  if(indexKhaoSat != -1){
+    ds[indexKhaoSat].diem = d;
+    ds[indexKhaoSat].ketqua = kq;
+
+    // Lưu lịch sử điểm theo ngày để theo dõi dao động tư tưởng
+    ds[indexKhaoSat].theoDoi = ds[indexKhaoSat].theoDoi || [];
+    ds[indexKhaoSat].theoDoi.push({
+      ngay: new Date().toISOString().split('T')[0],
+      diem: d
+    });
+
+    localStorage.setItem("hosoQN", JSON.stringify(ds));
+  }
+
+  document.getElementById("ketqua").innerHTML = `Điểm: ${d} → <b>${kq}</b>`;
+}
+
+
+
+// ---------------- 3️⃣ Danh sách & Xuất Excel ----------------
+function excelView(){
+  let ds=JSON.parse(localStorage.getItem("hosoQN"))||[];
+  let html="<h2>Danh sách quân nhân & Xuất Excel</h2>";
+  if(ds.length===0){
+    html+="<p>Chưa có dữ liệu.</p>";
+  } else {
+    html+=`<table>
+      <tr>
+        <th>Họ tên</th><th>Giới tính</th><th>Ngày sinh</th><th>Cấp bậc</th><th>Chức vụ</th>
+        <th>Đơn vị</th><th>Nhận xét</th><th>Lịch sử</th><th>Điểm</th><th>KQ tư tưởng</th><th>Hành động</th>
+      </tr>`;
+    ds.forEach((h,i)=>{
+      html+=`<tr>
+        <td>${h.hoten}</td><td>${h.gioitinh}</td><td>${h.ngaysinh}</td><td>${h.capbac}</td><td>${h.chucvu}</td>
+        <td>${h.donvi}</td><td>${h.nhanxet}</td><td>${h.lichsu}</td><td>${h.diem||""}</td><td>${h.ketqua||""}</td>
+        <td><button onclick="xoaNhanVien(${i})">❌ Xóa</button></td>
+      </tr>`;
+    });
+    html+="</table>";
+    html+=`<button onclick="xuatExcel()">Xuất Excel & Gửi Sheets</button>`;
+  }
+  document.getElementById("lesson-content").innerHTML=html;
+}
+
+// Hàm xóa quân nhân theo index
+function xoaNhanVien(i){
+  let ds = JSON.parse(localStorage.getItem("hosoQN"))||[];
+  if(confirm(`Bạn có chắc muốn xóa quân nhân "${ds[i].hoten}" không?`)){
+    ds.splice(i,1);
+    localStorage.setItem("hosoQN", JSON.stringify(ds));
+    excelView(); // cập nhật lại danh sách
+  }
+}
+
+
+function xuatExcel(){
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  if(ds.length===0){ alert("Chưa có dữ liệu để xuất!"); return; }
+
+  let csv="Ho ten,Gioi tinh,Ngay sinh,Cap bac,Chuc vu,Don vi,Nhan xet,Lich su,Diem,Ket qua\n";
+  ds.forEach(h => {
+    csv += `${h.hoten},${h.gioitinh},${h.ngaysinh},${h.capbac},${h.chucvu},${h.donvi},${h.nhanxet},${h.lichsu},${h.diem||""},${h.ketqua||""}\n`;
+  });
+
+  let blob = new Blob(["\uFEFF" + csv], {type:"text/csv;charset=utf-8;"});
+let a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = "ho-so-quan-nhan.csv";
+a.click();
+
+
+  // Gửi lên Google Sheets
+  ds.forEach(hs=>{
+    fetch("https://script.google.com/macros/s/AKfycbzEPb6s06uc6OeVpfkspSSnITZBS04ObtHXYXT6YNjFdqUGubrkOjVHnNCU8p7aaAXNEw/exec",{
+      method:"POST",body:JSON.stringify(hs),headers:{"Content-Type":"application/json"}
+    }).then(res=>res.json()).then(data=>{if(data.status==="ok") console.log(`Đã gửi ${hs.hoten} lên Sheets`); else console.warn("Lỗi khi gửi:",data.message);})
+    .catch(err=>console.error("Lỗi kết nối:",err.message));
+  });
+}
+
+// ---------------- 4️⃣ Báo cáo thống kê ----------------
+function baocao(){
+  let ds=JSON.parse(localStorage.getItem("hosoQN"))||[];
+  let html="<h2>Báo cáo thống kê</h2>";
+  html+=`<div style="display:flex;flex-wrap:wrap;justify-content:space-between;">
+  <div style="flex:1;min-width:300px;margin-right:10px;"><canvas id='chartBar'></canvas></div>
+  <div style="flex:0 0 300px;min-width:250px;margin-left:10px;"><canvas id='chartPie'></canvas></div></div><div id="dsLoc" style="margin-top:20px;"></div>`;
+  document.getElementById("lesson-content").innerHTML=html;
+
+  let count={"Ổn định":0,"Cần theo dõi":0,"Cảnh báo":0};
+  ds.forEach(h=>{if(h.ketqua) count[h.ketqua]++;});
+
+  new Chart(document.getElementById('chartBar').getContext('2d'),{
+    type:'bar',
+    data:{labels:["Ổn định","Cần theo dõi","Cảnh báo"],datasets:[{label:"Số quân nhân",data:[count["Ổn định"],count["Cần theo dõi"],count["Cảnh báo"]],backgroundColor:["#28a745","#ffc107","#dc3545"]}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}},onClick:function(evt,ele){if(ele.length>0){let kq=["Ổn định","Cần theo dõi","Cảnh báo"][ele[0].index];hienThiDanhSach(kq,null);}}}
+  });
+
+  let units={};ds.forEach(h=>{if(h.ketqua==="Cảnh báo") units[h.donvi]=(units[h.donvi]||0)+1;});
+  let pieLabels=Object.keys(units),pieData=Object.values(units);
+
+  new Chart(document.getElementById('chartPie').getContext('2d'),{
+    type:'pie',
+    data:{labels:pieLabels,datasets:[{label:"Cảnh báo theo đơn vị",data:pieData,backgroundColor:pieLabels.map((_,i)=>["#007bff","#28a745","#ffc107","#dc3545","#6f42c1"][i%5])}]},
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:12,boxHeight:12,font:{size:11}}},tooltip:{callbacks:{label:function(context){let total=context.dataset.data.reduce((a,b)=>a+b,0);let value=context.raw;let percent=((value/total)*100).toFixed(1);return`${context.label}: ${value} quân nhân (${percent}%)`;}}}},onClick:function(evt,ele){if(ele.length>0){hienThiDanhSach("Cảnh báo",pieLabels[ele[0].index]);}}}
+  });
+
+  function hienThiDanhSach(kq,dv){
+    let html=`<h3>Danh sách quân nhân lọc</h3>`;
+    let filtered=ds.filter(h=>h.ketqua===kq&&(!dv||h.donvi===dv));
+    if(filtered.length===0) html+="<p>Không có quân nhân nào phù hợp.</p>";
+    else{
+      html+=`<table><tr><th>Họ tên</th><th>Cấp bậc</th><th>Đơn vị</th><th>KQ tư tưởng</th></tr>`;
+      filtered.forEach(h=>{html+=`<tr><td>${h.hoten}</td><td>${h.capbac}</td><td>${h.donvi}</td><td>${h.ketqua}</td></tr>`;});
+      html+="</table>";
+    }
+    document.getElementById("dsLoc").innerHTML=html;
+  }
+}
+
+// ---------------- 5️⃣ Phân tích & cảnh báo ----------------
+function canhbao(){
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  let html = "<h2>Phân tích & cảnh báo tư tưởng</h2>";
+
+  html += `<label>Đơn vị:</label>
+  <select id="filterDonVi" onchange="locCanhBao()">
+    <option value="">--Tất cả--</option>
+    ${[...new Set(ds.map(d => d.donvi))].map(dv => `<option value="${dv}">${dv}</option>`).join('')}
+  </select>`;
+
+  html += `<label>Cấp bậc:</label>
+  <select id="filterCapBac" onchange="locCanhBao()">
+    <option value="">--Tất cả--</option>
+    ${[...new Set(ds.map(d => d.capbac))].map(cb => `<option value="${cb}">${cb}</option>`).join('')}
+  </select>`;
+
+  html += `<div id="danhsachCanhBao"></div>`;
+  document.getElementById("lesson-content").innerHTML = html;
+
+  locCanhBao();
+}
+
+function locCanhBao(){
+  let dv = document.getElementById("filterDonVi").value;
+  let cb = document.getElementById("filterCapBac").value;
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+
+  let html = `<table style="width:100%;border-collapse:collapse">
+    <tr><th>Họ tên</th><th>Cấp bậc</th><th>Đơn vị</th><th>Điểm gần nhất</th><th>Xu hướng</th><th>Cảnh báo</th></tr>`;
+
+  ds.filter(h => (dv==""||h.donvi==dv) && (cb==""||h.capbac==cb)).forEach(h => {
+    let theoDoi = h.theoDoi || [];
+    let diemGannhat = theoDoi.length ? theoDoi[theoDoi.length-1].diem : h.diem || 0;
+
+    // Tính xu hướng
+    let xuHuong = "Ổn định", canhBao = "";
+    if(theoDoi.length >= 3){
+      let last3 = theoDoi.slice(-3).map(t => t.diem);
+      if(last3[0] > last3[1] && last3[1] > last3[2]) {
+        xuHuong = "Giảm liên tục";
+        canhBao = "⚠️ Cảnh báo xu hướng xấu 3 ngày liên tiếp";
+      } else if(last3[1] > last3[2]) {
+        xuHuong = "Giảm nhẹ";
+        canhBao = "🔔 Cảnh báo xu hướng xấu";
+      }
+    } else if(theoDoi.length >= 2){
+      let last2 = theoDoi.slice(-2).map(t => t.diem);
+      if(last2[0] > last2[1]){
+        xuHuong = "Giảm nhẹ";
+        canhBao = "🔔 Cảnh báo xu hướng xấu";
+      }
+    }
+
+    html += `<tr>
+      <td>${h.hoten}</td>
+      <td>${h.capbac}</td>
+      <td>${h.donvi}</td>
+      <td>${diemGannhat}</td>
+      <td>${xuHuong}</td>
+      <td>${canhBao}</td>
+    </tr>`;
+  });
+
+  html += "</table>";
+  document.getElementById("danhsachCanhBao").innerHTML = html;
+}
+
+
+// ---------------- 6️⃣ Nâng cấp: theo dõi tư tưởng ----------------
+// ---------------- 6️⃣ Nâng cấp: theo dõi tư tưởng ----------------
+let chartLineInstance = null; // lưu chart hiện tại để xóa trước khi vẽ mới
+
+function theoDoiTuTuong(){
+  let ds = JSON.parse(localStorage.getItem("hosoQN")) || [];
+  let html = "<h2>Theo dõi dao động tư tưởng theo ngày</h2>";
+  if(ds.length === 0){
+    html += "<p>Chưa có dữ liệu.</p>";
+    document.getElementById("lesson-content").innerHTML = html;
+    return;
+  }
+
+  html += `
+    <label>Chọn quân nhân:</label>
+    <select id="chonNguoi">
+      <option value=''>--Chọn quân nhân--</option>
+      ${ds.map((h,i)=>`<option value='${i}'>${h.hoten}</option>`).join('')}
+    </select>
+    <canvas id="chartLine" style="margin-top:15px; width:100%; height:300px;"></canvas>
+  `;
+  document.getElementById("lesson-content").innerHTML = html;
+
+  document.getElementById("chonNguoi").addEventListener("change", function(){
+    let idx = this.value;
+    if(idx === "") return;
+
+    let data = ds[idx].theoDoi || [];
+    let labels = data.map(e => e.ngay);
+    let points = data.map(e => e.diem);
+
+    // Nếu chart cũ tồn tại, hủy nó trước khi tạo mới
+    if(chartLineInstance) chartLineInstance.destroy();
+
+    chartLineInstance = new Chart(document.getElementById("chartLine").getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: ds[idx].hoten + ' - điểm tư tưởng',
+          data: points,
+          borderColor: "#007bff",
+          backgroundColor: "#007bff33",
+          tension: 0.3,
+          fill: true,
+          pointRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            min: 0,
+            max: 30, // thang điểm 10 câu
+            title: { display: true, text: 'Điểm tư tưởng' }
+          },
+          x: { title: { display: true, text: 'Ngày' } }
+        },
+        plugins: {
+          legend: { display: true, position: 'top' },
+          tooltip: {
+            callbacks: {
+              label: function(context){
+                return `Điểm: ${context.raw}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+}
+
+</script>
+</body>
+</html>

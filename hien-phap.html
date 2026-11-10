@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiến pháp & Pháp luật cơ bản</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;background:#f0f8ff;padding:20px;}
+header{
+  background:rgba(255,255,255,.9);
+  padding:15px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  box-shadow:0 4px 10px rgba(0,0,0,.3);
+}
+header h1{color:#007bff;margin-bottom:10px;}
+header button{
+  margin:3px;padding:8px 12px;border:none;border-radius:8px;
+  cursor:pointer;background:#1e3c72;color:#fff;
+}
+section{max-width:900px;margin:30px auto;}
+button.back{
+  background:#1e3c72;color:#fff;border:none;border-radius:10px;
+  padding:10px 15px;cursor:pointer;margin-bottom:20px;
+}
+
+.accordion-item{
+  background:rgba(255,255,255,0.75);
+  margin-bottom:10px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.accordion-header{
+  padding:15px 20px;
+  cursor:pointer;
+  font-weight:bold;
+  color:#1e3c72;
+}
+.accordion-content{
+  display:none;
+  padding:10px 20px 15px;
+  line-height:1.6;
+}
+.accordion-content ul{margin-left:20px;}
+.accordion-content li{margin-bottom:6px;}
+
+.editable[contenteditable="true"]{
+  outline:2px dashed red;
+  background:#fff8c6;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1 class="editable" data-key="title-main">Hiến pháp & Pháp luật cơ bản</h1>
+  <button onclick="adminLogin()">🔐 Quản trị</button>
+  <button id="editBtn" onclick="toggleEdit()" style="display:none">✏️ Chỉnh sửa</button>
+  <button id="saveBtn" onclick="saveContent()" style="display:none">💾 Lưu</button>
+  <button id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Thoát</button>
+</header>
+
+<section>
+<a href="pho-bien-gdpl.html"><button class="back">⏪ Quay lại</button></a>
+
+<!-- ===== MỤC 1 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m1-title">1. Hiến pháp nước CHXHCN Việt Nam 📜</span>
+  </div>
+  <div class="accordion-content editable" data-key="m1-content">
+    <p>Hiến pháp là văn bản pháp lý cao nhất, quy định tổ chức, quyền lực của Nhà nước, quyền và nghĩa vụ của công dân.</p>
+    <ul>
+      <li>Xác lập chế độ chính trị, kinh tế, xã hội.</li>
+      <li>Bảo đảm quyền con người, quyền công dân.</li>
+      <li>Là cơ sở xây dựng các luật khác.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 2 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m2-title">2. Quyền và nghĩa vụ cơ bản của công dân ⚖️</span>
+  </div>
+  <div class="accordion-content editable" data-key="m2-content">
+    <ul>
+      <li>Quyền bình đẳng trước pháp luật.</li>
+      <li>Quyền tự do ngôn luận, báo chí, tín ngưỡng.</li>
+      <li>Nghĩa vụ tuân thủ pháp luật, bảo vệ Tổ quốc.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 3 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m3-title">3. Luật cơ bản quan trọng 📚</span>
+  </div>
+  <div class="accordion-content editable" data-key="m3-content">
+    <ul>
+      <li>Luật Dân sự</li>
+      <li>Luật Hình sự</li>
+      <li>Luật Lao động</li>
+      <li>Luật Hôn nhân và Gia đình</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 4 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m4-title">4. Nguyên tắc cơ bản của pháp luật ⚖️</span>
+  </div>
+  <div class="accordion-content editable" data-key="m4-content">
+    <ul>
+      <li>Mọi công dân bình đẳng trước pháp luật.</li>
+      <li>Vi phạm pháp luật đều bị xử lý.</li>
+      <li>Pháp luật bảo vệ lợi ích hợp pháp.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 5 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m5-title">5. Kỷ luật trong quân đội 🪖</span>
+  </div>
+  <div class="accordion-content editable" data-key="m5-content">
+    <ul>
+      <li>Chấp hành mệnh lệnh cấp trên.</li>
+      <li>Không tự ý bỏ nhiệm vụ.</li>
+      <li>Giữ gìn vũ khí, trang bị.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 6 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m6-title">6. Bảo vệ Tổ quốc & An ninh quốc gia 🛡️</span>
+  </div>
+  <div class="accordion-content editable" data-key="m6-content">
+    <ul>
+      <li>Tham gia huấn luyện, trực sẵn sàng chiến đấu.</li>
+      <li>Bảo vệ bí mật quân sự.</li>
+      <li>Phòng chống xâm nhập, phá hoại.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 7 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m7-title">7. Thanh tra, kiểm tra & xử lý vi phạm 🔍</span>
+  </div>
+  <div class="accordion-content editable" data-key="m7-content">
+    <ul>
+      <li>Chấp hành kiểm tra theo quy định.</li>
+      <li>Xử lý nghiêm vi phạm.</li>
+      <li>Thực hiện đúng kết luận thanh tra.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 8 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m8-title">8. Quyền lợi & nghĩa vụ của quân nhân 🧑‍✈️</span>
+  </div>
+  <div class="accordion-content editable" data-key="m8-content">
+    <ul>
+      <li>Được bảo đảm chế độ, chính sách.</li>
+      <li>Thực hiện nhiệm vụ được giao.</li>
+      <li>Gương mẫu chấp hành pháp luật.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== MỤC 9 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m9-title">9. Tổng kết & áp dụng pháp luật 📘</span>
+  </div>
+  <div class="accordion-content editable" data-key="m9-content">
+    <p>Vận dụng kiến thức pháp luật vào thực tiễn công tác, huấn luyện và sinh hoạt.</p>
+  </div>
+</div>
+
+<!-- ===== MỤC 10 ===== -->
+<div class="accordion-item">
+  <div class="accordion-header" onclick="toggleContent(this)">
+    <span class="editable" data-key="m10-title">10. Nâng cao nhận thức pháp luật 📖</span>
+  </div>
+  <div class="accordion-content editable" data-key="m10-content">
+    <ul>
+      <li>Thường xuyên học tập pháp luật.</li>
+      <li>Tuyên truyền cho đồng đội.</li>
+      <li>Xây dựng đơn vị vững mạnh toàn diện.</li>
+    </ul>
+  </div>
+</div>
+
+</section>
+
+<script>
+const ADMIN_PASSWORD="100";
+let isAdmin=false;
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzHnGQ8C0QR6BZayW-x6GD8RHgneA7Kgn4wsG8lS_tG4m2yHID0x57Sl6V4pqhIccqZ9A/exec";
+
+function toggleContent(h){
+  const c=h.nextElementSibling;
+  c.style.display=c.style.display==="block"?"none":"block";
+}
+
+function adminLogin(){
+  if(prompt("Nhập mật khẩu quản trị:")===ADMIN_PASSWORD){
+    isAdmin=true;
+    editBtn.style.display=saveBtn.style.display=logoutBtn.style.display="inline-block";
+  }
+}
+
+function toggleEdit(){
+  if(!isAdmin) return;
+  document.querySelectorAll(".editable").forEach(e=>{
+    e.contentEditable=e.contentEditable!=="true";
+  });
+}
+
+async function saveContent(){
+  const data={};
+  document.querySelectorAll(".editable").forEach(e=>data[e.dataset.key]=e.innerHTML);
+  await fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify(data)});
+  alert("💾 Đã lưu nội dung");
+}
+
+function logoutAdmin(){
+  isAdmin=false;
+  document.querySelectorAll(".editable").forEach(e=>e.contentEditable=false);
+  editBtn.style.display=saveBtn.style.display=logoutBtn.style.display="none";
+}
+
+async function loadContent(){
+  const r=await fetch(SCRIPT_URL);
+  const d=await r.json();
+  document.querySelectorAll(".editable").forEach(e=>{
+    if(d[e.dataset.key]) e.innerHTML=d[e.dataset.key];
+  });
+}
+
+window.onload=loadContent;
+</script>
+
+</body>
+</html>

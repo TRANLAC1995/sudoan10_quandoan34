@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kết quả kiểm tra</title>
+
+<!-- Thư viện xuất Excel -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#f0f8ff;
+  padding:20px;
+}
+h1{
+  text-align:center;
+  color:#1e3c72;
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+  flex-wrap:wrap;
+  gap:10px;
+}
+button{
+  background:#1e3c72;
+  color:#fff;
+  border:none;
+  padding:10px 15px;
+  border-radius:8px;
+  cursor:pointer;
+}
+button.danger{background:#c0392b;}
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  margin-top:15px;
+}
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+}
+th{
+  background:#1e3c72;
+  color:#fff;
+}
+tr:nth-child(even){background:#f2f2f2;}
+canvas{
+  background:#fff;
+  border-radius:12px;
+  margin-top:20px;
+  padding:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📊 KẾT QUẢ KIỂM TRA</h1>
+
+<div class="top">
+  <div id="total">Tổng lượt làm: 0</div>
+  <div>
+    <button onclick="exportExcel()">📤 Xuất Excel</button>
+    <button class="danger" onclick="clearData()">🗑 Xóa kết quả</button>
+    <button onclick="location.href='index.html'">⬅ Về trang chủ</button>
+  </div>
+</div>
+
+<table id="resultTable">
+  <thead>
+    <tr>
+      <th>STT</th>
+      <th>Họ và tên</th>
+      <th>Đơn vị</th>
+      <th>Trung đội</th>
+      <th>Đề</th>
+      <th>Điểm</th>
+    </tr>
+  </thead>
+  <tbody id="resultBody"></tbody>
+</table>
+
+<canvas id="chart" height="120"></canvas>
+
+<script>
+let results=[];
+
+function loadResults(){
+  const tbody=document.getElementById("resultBody");
+  tbody.innerHTML="";
+  results=[];
+  let count=0;
+
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);
+    if(key.startsWith("score_")){
+      const data=JSON.parse(localStorage.getItem(key));
+      results.push(data);
+    }
+  }
+
+  results.forEach((d,i)=>{
+    count++;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${count}</td>
+      <td>${d.name}</td>
+      <td>${d.unit}</td>
+      <td>${d.team}</td>
+      <td>Đề ${d.exam}</td>
+      <td>${d.score}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("total").innerText="Tổng lượt làm: "+count;
+  drawChart();
+}
+
+function drawChart(){
+  const canvas=document.getElementById("chart");
+  const ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  if(results.length===0) return;
+
+  const maxScore=10;
+  const barWidth=canvas.width/(results.length*1.5);
+
+  results.forEach((d,i)=>{
+    const x=30+i*barWidth*1.5;
+    const h=(d.score/maxScore)*(canvas.height-40);
+    const y=canvas.height-h-20;
+
+    ctx.fillStyle="#1e3c72";
+    ctx.fillRect(x,y,barWidth,h);
+
+    ctx.fillStyle="#000";
+    ctx.fillText(d.score,x+barWidth/3,y-5);
+    ctx.fillText(d.name.split(" ").slice(-1)[0],x,canvas.height-5);
+  });
+}
+
+function exportExcel(){
+  const ws=XLSX.utils.table_to_sheet(document.getElementById("resultTable"));
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,"KetQua");
+  XLSX.writeFile(wb,"ketqua_kiemtra.xlsx");
+}
+
+function clearData(){
+  if(confirm("Bạn chắc chắn muốn xóa toàn bộ kết quả?")){
+    for(let i=localStorage.length-1;i>=0;i--){
+      const key=localStorage.key(i);
+      if(key.startsWith("score_")){
+        localStorage.removeItem(key);
+      }
+    }
+    loadResults();
+  }
+}
+
+loadResults();
+</script>
+
+</body>
+</html>

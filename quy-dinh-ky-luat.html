@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luật Quân đội Nhân dân Việt Nam</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;background:#f0f8ff;padding:20px;}
+header{
+  background:rgba(255,255,255,.9);
+  padding:15px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  box-shadow:0 4px 10px rgba(0,0,0,.3);
+  position:fixed;
+  top:0;width:100%;z-index:1000;
+}
+header h1{color:#007bff;margin-bottom:10px;}
+header button{
+  margin:3px;padding:8px 12px;border:none;
+  border-radius:8px;cursor:pointer;
+  background:#1e3c72;color:#fff;
+}
+section{max-width:900px;margin:120px auto 40px;}
+.accordion-item{
+  background:rgba(255,255,255,.75);
+  margin-bottom:10px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+.accordion-header{
+  padding:15px 20px;
+  cursor:pointer;
+  font-weight:bold;
+  color:#1e3c72;
+}
+.accordion-content{
+  display:none;
+  padding:10px 20px 15px;
+  line-height:1.6;
+}
+.editable[contenteditable="true"]{
+  outline:2px dashed red;
+  background:#fff8c6;
+}
+button.back{
+  background:#1e3c72;color:#fff;
+  border:none;border-radius:10px;
+  padding:10px 15px;
+  cursor:pointer;margin-bottom:20px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="editable" data-key="title-main">Quy định kỷ luật</h1>
+  <button onclick="adminLogin()">🔐 Quản trị</button>
+  <button id="editBtn" onclick="toggleEdit()" style="display:none">✏️ Chỉnh sửa</button>
+  <button id="saveBtn" onclick="saveContent()" style="display:none">💾 Lưu</button>
+  <button id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Thoát</button>
+</header>
+
+<section>
+<a href="pho-bien-gdpl.html"><button class="back">⏪ Quay lại</button></a>
+
+<!-- 10 MỤC -->
+<div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">1. Nguyên tắc kỷ luật chung 🪖</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m1">Quân nhân phải tuân thủ mọi quy định kỷ luật của đơn vị, chấp hành điều lệnh, mệnh lệnh cấp trên và pháp luật hiện hành.</p>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">2. Trách nhiệm của quân nhân ⚖️</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m2">Thực hiện nhiệm vụ đúng thời gian, đúng cách; giữ gìn vũ khí, trang thiết bị; gương mẫu chấp hành kỷ luật.</p>
+    </div>
+  </div>
+ 
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">3. Hình thức xử lý vi phạm 📋</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m3">Khi vi phạm kỷ luật, tùy mức độ có thể nhắc nhở, khiển trách, phạt hành chính hoặc truy cứu trách nhiệm theo quy định.</p>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">4. Quy trình báo cáo vi phạm 🔰</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m4">Mọi vi phạm phải báo cáo cấp trên, ghi biên bản, lưu trữ hồ sơ và thực hiện biện pháp khắc phục.</p>
+    </div>
+  </div>
+ 
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">5. Trách nhiệm bảo vệ tài sản và thiết bị quân sự 🛡️</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m5">Bảo quản vũ khí, trang thiết bị, phương tiện và tài sản của đơn vị; không được sử dụng sai mục đích hoặc làm hư hỏng.</p>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">6. Tuân thủ mệnh lệnh cấp trên 📝</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m6">Nghe theo mệnh lệnh trực tiếp của chỉ huy; không được tự ý thay đổi nhiệm vụ hoặc hành động trái lệnh.</p>
+    </div>
+  </div>
+  
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">7. Quy định về kỷ luật nội bộ 🪖</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m7">Tuân thủ nội quy đơn vị: giờ giấc trực, nghỉ phép, huấn luyện, bảo quản vũ khí, phương tiện và hành vi giao tiếp với đồng đội.</p>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">8. Báo cáo và giám sát vi phạm 🔍</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m8">Quân nhân phải báo cáo các vi phạm kỷ luật; chỉ huy sẽ giám sát, lập biên bản và xử lý theo quy định.</p>
+    </div>
+  </div>
+  
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">9. Biện pháp khen thưởng và kỷ luật 🎖️</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m9">Các hành vi gương mẫu được khen thưởng; vi phạm tùy mức độ sẽ bị xử lý nghiêm theo quy định của đơn vị và pháp luật.</p>
+    </div>
+  </div>
+  
+  <div class="accordion-item">
+    <div class="accordion-header" onclick="toggleContent(this)">10. Nâng cao ý thức kỷ luật 📘</div>
+    <div class="accordion-content">
+      <p class="editable" data-key="m10">Thường xuyên học tập, nghiên cứu quy định kỷ luật; vận dụng vào thực tiễn công tác, huấn luyện và bảo vệ Tổ quốc.</p>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<script>
+const ADMIN_PASSWORD="100";
+const SHEET_URL="https://script.google.com/macros/s/AKfycbygbhnj_7WRkPqpsW4UJH0caaS1TyOeO0BIe6VOrA34gj5ud-haoG411o28i4aXXDIQ/exec";
+let isAdmin=false;
+
+function toggleContent(h){
+  const c=h.nextElementSibling;
+  c.style.display=c.style.display==="block"?"none":"block";
+}
+
+function adminLogin(){
+  const p=prompt("Nhập mật khẩu quản trị:");
+  if(p===ADMIN_PASSWORD){
+    isAdmin=true;
+    editBtn.style.display=saveBtn.style.display=logoutBtn.style.display="inline-block";
+    alert("Đã vào chế độ quản trị");
+  }
+}
+
+function toggleEdit(){
+  if(!isAdmin) return;
+  document.querySelectorAll(".editable").forEach(el=>{
+    el.contentEditable=el.contentEditable!=="true";
+  });
+}
+
+async function saveContent(){
+  if(!isAdmin) return;
+  const data={};
+  document.querySelectorAll(".editable").forEach(el=>{
+    data[el.dataset.key]=el.innerHTML;
+  });
+  await fetch(SHEET_URL,{method:"POST",body:JSON.stringify(data)});
+  alert("Đã lưu nội dung");
+}
+
+async function loadContent(){
+  try{
+    const r=await fetch(SHEET_URL);
+    const d=await r.json();
+    document.querySelectorAll(".editable").forEach(el=>{
+      if(d[el.dataset.key]) el.innerHTML=d[el.dataset.key];
+    });
+  }catch(e){}
+}
+
+function logoutAdmin(){
+  isAdmin=false;
+  document.querySelectorAll(".editable").forEach(el=>el.contentEditable=false);
+  editBtn.style.display=saveBtn.style.display=logoutBtn.style.display="none";
+}
+
+window.onload=loadContent;
+</script>
+
+</body>
+</html>

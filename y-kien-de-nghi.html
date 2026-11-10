@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ý kiến – Đề nghị </title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;padding:20px;}
+header{
+  background:rgba(255,255,255,.9);
+  padding:15px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:1000;
+}
+header h1{color:#198754;margin-bottom:10px;}
+header button{margin:3px;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;background:#1e3c72;color:#fff;}
+section{max-width:900px;margin:120px auto 40px;}
+.card{background:rgba(255,255,255,.65);padding:25px;margin:20px 0;border-radius:20px;box-shadow:0 6px 15px rgba(0,0,0,.3);}
+.editable[contenteditable="true"]{outline:2px dashed red;background:#fff8c6;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="editable" data-key="title-main">📝 Ý KIẾN – ĐỀ NGHỊ</h1>
+  <button onclick="adminLogin()">🔐 Quản trị</button>
+  <button id="editBtn" onclick="toggleEdit()" style="display:none">✏️ Chỉnh sửa</button>
+  <button id="saveBtn" onclick="saveContent()" style="display:none">💾 Lưu</button>
+  <button id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Thoát</button>
+</header>
+
+<section>
+  <div class="card">
+    <h2 class="editable" data-key="yk-title-1">I. Ý kiến đánh giá</h2>
+    <p class="editable" data-key="yk-text-1">Đánh giá chung về kết quả thực hiện nhiệm vụ, ưu điểm nổi bật và những mặt còn hạn chế trong quá trình triển khai nhiệm vụ của đơn vị.</p>
+  </div>
+
+  <div class="card">
+    <h2 class="editable" data-key="yk-title-2">II. Khó khăn, vướng mắc</h2>
+    <p class="editable" data-key="yk-text-2">Nêu rõ những khó khăn về quân số, cơ sở vật chất, trang bị, điều kiện bảo đảm và các yếu tố khách quan, chủ quan ảnh hưởng đến kết quả thực hiện nhiệm vụ.</p>
+  </div>
+
+  <div class="card">
+    <h2 class="editable" data-key="yk-title-3">III. Ý kiến đề nghị</h2>
+    <ul>
+      <li class="editable" data-key="yk-li-1">Đề nghị cấp trên quan tâm, bổ sung trang bị, vật chất phục vụ huấn luyện và công tác.</li>
+      <li class="editable" data-key="yk-li-2">Đề nghị tổ chức tập huấn, bồi dưỡng nâng cao trình độ cho đội ngũ cán bộ.</li>
+      <li class="editable" data-key="yk-li-3">Đề nghị điều chỉnh, bổ sung một số nội dung kế hoạch cho phù hợp thực tiễn.</li>
+    </ul>
+  </div>
+</section>
+
+<div style="text-align:center; margin:30px 0;">
+  <button onclick="window.location.href='bao-cao-cap-tren.html'" style="background:#1e3c72;color:#fff;border:none;padding:10px 18px;border-radius:12px;cursor:pointer;font-size:0.95rem;">⬅ Quay lại</button>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "100"; 
+let isAdmin = false;
+
+// URL Apps Script của bạn
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5uDsgqyojosBdZ91FAUTXNutorBGVaDFJzBk1ZlsCEsF0AnwRkQY9si9ZRpl06pVaig/exec";
+
+const editBtn = document.getElementById("editBtn");
+const saveBtn = document.getElementById("saveBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
+function adminLogin() {
+  const pass = prompt("Nhập mật khẩu quản trị:");
+  if (pass === ADMIN_PASSWORD) {
+    isAdmin = true;
+    editBtn.style.display = saveBtn.style.display = logoutBtn.style.display = "inline-block";
+    alert("✅ Đã vào chế độ quản trị");
+  }
+}
+
+function toggleEdit() {
+  if (!isAdmin) return;
+  document.querySelectorAll(".editable").forEach(el => el.contentEditable = el.contentEditable !== "true");
+}
+
+async function saveContent() {
+  if (!isAdmin) return;
+  const data = {};
+  document.querySelectorAll(".editable").forEach(el => data[el.dataset.key] = el.innerHTML);
+  try {
+    const res = await fetch(SCRIPT_URL, {method: "POST", body: JSON.stringify(data)});
+    alert("💾 Nội dung đã lưu lên Google Sheet!");
+  } catch (err) {
+    alert("❌ Lỗi lưu: " + err.message);
+  }
+}
+
+async function loadContent() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    document.querySelectorAll(".editable").forEach(el => {
+      if (data[el.dataset.key]) el.innerHTML = data[el.dataset.key];
+    });
+  } catch (err) {
+    console.error("❌ Lỗi tải dữ liệu:", err);
+  }
+}
+
+function logoutAdmin() {
+  isAdmin = false;
+  document.querySelectorAll(".editable").forEach(el => el.contentEditable = false);
+  editBtn.style.display = saveBtn.style.display = logoutBtn.style.display = "none";
+}
+
+window.onload = loadContent;
+</script>
+
+</body>
+</html>

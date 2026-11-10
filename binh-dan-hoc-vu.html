@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bình dân học vụ số</title>
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family: Arial, sans-serif; padding:20px; background:#f4f9f4; color:#222;}
+header {background:#4caf50; padding:20px; text-align:center; border-radius:0 0 15px 15px;}
+header h1 {color:#fff; font-size:1.8rem;}
+section {max-width:900px; margin:20px auto;}
+.button-grid {display:grid; grid-template-columns: 1fr; gap:10px; margin-bottom:15px;}
+.btn-lesson {border:none; border-radius:10px; padding:15px; font-size:1rem; cursor:pointer; transition:0.3s; text-align:left;}
+.btn-lesson:hover {transform:translateY(-2px);}
+#lesson-content {padding:15px; border-radius:12px; min-height:100px; box-shadow:0 3px 8px rgba(0,0,0,0.2);}
+.lesson1 {background:#d1f2eb;}
+.lesson2 {background:#fce4ec;}
+.lesson3 {background:#fff3cd;}
+.lesson4 {background:#e1f5fe;}
+h2 {color:#0b3d91; margin-bottom:10px;}
+ul {margin-left:20px; margin-bottom:10px; line-height:1.5;}
+input[type="radio"] {margin-right:5px;}
+button.back {background:#0b3d91; color:#fff; padding:8px 12px; border-radius:8px; margin-bottom:15px;}
+button.back:hover {background:#07306d;}
+button#submit {margin-top:10px; background:#4caf50; color:#fff; border:none; padding:10px 15px; border-radius:8px; cursor:pointer;}
+button#submit:hover {background:#45a049;}
+#result {margin-top:15px; font-weight:bold; color:#d84315;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Bình dân học vụ số</h1>
+</header>
+
+<section>
+<a href="index.html"><button class="back">⏪ Quay lại</button></a>
+
+<div class="button-grid">
+  <button class="btn-lesson lesson1" onclick="showLesson(1)">1. Kiến thức về Bình dân học vụ số</button>
+  <button class="btn-lesson lesson2" onclick="showLesson(2)">2. Câu hỏi trắc nghiệm</button>
+  <button class="btn-lesson lesson3" onclick="showLesson(3)">3. Thực hành áp dụng kiến thức</button>
+  <button class="btn-lesson lesson4" onclick="showLesson(4)">4. Kinh nghiệm rút ra</button>
+</div>
+
+<div id="lesson-content">
+<p>Chọn một mục để xem nội dung...</p>
+</div>
+
+<script>
+const lessons = {
+1:`<h2>1. Kiến thức về Bình dân học vụ số</h2>
+<ul>
+<li>Hiểu rõ quyền và nghĩa vụ của bản thân trong gia đình, đơn vị và xã hội.</li>
+<li>Hiểu kiến thức cơ bản về Hiến pháp, pháp luật và kỷ luật quân đội.</li>
+<li>Nắm vững các quy định cơ bản trong công tác tư tưởng và quản lý quân nhân.</li>
+<li>Rèn luyện kỹ năng nhận biết thông tin đúng/sai, tránh các âm mưu tuyên truyền xấu.</li>
+</ul>`,
+
+2:`<h2>2. Câu hỏi trắc nghiệm</h2>
+<form id="quizForm">
+<ol>
+<li>Quyền và nghĩa vụ cơ bản của công dân được ghi trong văn bản nào?<br>
+<label><input type="radio" name="q1" value="A">A. Hiến pháp</label><br>
+<label><input type="radio" name="q1" value="B">B. Luật Hình sự</label><br>
+<label><input type="radio" name="q1" value="C">C. Quyết định hành chính</label>
+</li>
+<li>Mục tiêu quản lý tư tưởng trong đơn vị là gì?<br>
+<label><input type="radio" name="q2" value="A">A. Giữ kỷ luật và động lực</label><br>
+<label><input type="radio" name="q2" value="B">B. Chỉ để báo cáo</label><br>
+<label><input type="radio" name="q2" value="C">C. Giảm thời gian công việc</label>
+</li>
+<li>Biện pháp rèn luyện kỷ luật quân đội bao gồm?<br>
+<label><input type="radio" name="q3" value="A">A. Tuân thủ mệnh lệnh</label><br>
+<label><input type="radio" name="q3" value="B">B. Thỏa thuận tự do</label><br>
+<label><input type="radio" name="q3" value="C">C. Làm theo cảm hứng</label>
+</li>
+<li>Khi gặp thông tin sai lệch về quân đội, bạn nên làm gì?<br>
+<label><input type="radio" name="q4" value="A">A. Báo cáo cấp trên</label><br>
+<label><input type="radio" name="q4" value="B">B. Chia sẻ ngay với đồng đội</label><br>
+<label><input type="radio" name="q4" value="C">C. Bỏ qua</label>
+</li>
+<li>Ai chịu trách nhiệm trong quản lý tư tưởng?<br>
+<label><input type="radio" name="q5" value="A">A. Tổ chức chỉ huy</label><br>
+<label><input type="radio" name="q5" value="B">B. Mỗi cá nhân tự quản</label><br>
+<label><input type="radio" name="q5" value="C">C. Tổ chức dân sự</label>
+</li>
+<li>Thông tin xấu có thể gây hậu quả gì?<br>
+<label><input type="radio" name="q6" value="A">A. Làm giảm kỷ luật và tinh thần</label><br>
+<label><input type="radio" name="q6" value="B">B. Không ảnh hưởng gì</label><br>
+<label><input type="radio" name="q6" value="C">C. Chỉ là tin đồn</label>
+</li>
+<li>Quản lý tư tưởng giúp gì cho đơn vị?<br>
+<label><input type="radio" name="q7" value="A">A. Duy trì đoàn kết và kỷ luật</label><br>
+<label><input type="radio" name="q7" value="B">B. Chỉ làm báo cáo</label><br>
+<label><input type="radio" name="q7" value="C">C. Giảm trách nhiệm</label>
+</li>
+<li>Kỹ năng nhận biết thông tin xấu là gì?<br>
+<label><input type="radio" name="q8" value="A">A. Phân biệt đúng/sai</label><br>
+<label><input type="radio" name="q8" value="B">B. Tin tất cả</label><br>
+<label><input type="radio" name="q8" value="C">C. Tránh tiếp nhận thông tin</label>
+</li>
+<li>Khi quân nhân gặp khó khăn tâm tư, cần?<br>
+<label><input type="radio" name="q9" value="A">A. Lắng nghe và hỗ trợ</label><br>
+<label><input type="radio" name="q9" value="B">B. Phớt lờ</label><br>
+<label><input type="radio" name="q9" value="C">C. Chỉ báo cáo cấp trên</label>
+</li>
+<li>Kết quả của quản lý tư tưởng tốt là gì?<br>
+<label><input type="radio" name="q10" value="A">A. Kỷ luật và tinh thần vững mạnh</label><br>
+<label><input type="radio" name="q10" value="B">B. Không thay đổi gì</label><br>
+<label><input type="radio" name="q10" value="C">C. Giảm tinh thần đồng đội</label>
+</li>
+</ol>
+<button type="button" id="submit" onclick="checkQuiz()">Xem kết quả</button>
+<div id="result"></div>
+</form>`,
+
+3:`<h2>3. Thực hành áp dụng kiến thức</h2>
+<ul>
+<li>Theo dõi và nắm bắt tình hình tư tưởng trong đơn vị.</li>
+<li>Lắng nghe tâm tư, nguyện vọng và phản hồi kịp thời.</li>
+<li>Thực hiện các biện pháp cải thiện tinh thần, kỷ luật và tinh thần đồng đội.</li>
+<li>Lập báo cáo định kỳ và rút kinh nghiệm.</li>
+</ul>`,
+
+4:`<h2>4. Kinh nghiệm rút ra</h2>
+<ul>
+<li>Hiểu rõ vai trò của mỗi cá nhân trong đơn vị.</li>
+<li>Biết cách phối hợp và hỗ trợ đồng đội hiệu quả.</li>
+<li>Nhận diện và phản ứng đúng đắn với thông tin xấu, âm mưu thù địch.</li>
+<li>Duy trì tinh thần, kỷ luật, trách nhiệm với bản thân, gia đình và đơn vị.</li>
+</ul>`
+};
+
+function showLesson(num){
+  document.getElementById('lesson-content').innerHTML = lessons[num];
+}
+
+// Kiểm tra trắc nghiệm
+function checkQuiz() {
+  const answers = {q1:'A',q2:'A',q3:'A',q4:'A',q5:'A',q6:'A',q7:'A',q8:'A',q9:'A',q10:'A'};
+  let score = 0;
+  for(let i=1;i<=10;i++){
+    const radios = document.getElementsByName('q'+i);
+    for(const r of radios){
+      if(r.checked && r.value===answers['q'+i]){
+        score++;
+      }
+    }
+  }
+  document.getElementById('result').innerText = `Bạn trả lời đúng ${score} trên 10 câu.`;
+}
+</script>
+
+</body>
+</html>

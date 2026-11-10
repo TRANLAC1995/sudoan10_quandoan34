@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo cấp trên</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family: Arial,sans-serif;
+  background: linear-gradient(135deg,#dbeafe,#f0fdf4);
+  min-height:100vh;
+  padding:20px;
+}
+header{
+  background: rgba(255,255,255,0.85);
+  padding:15px;
+  text-align:center;
+  border-radius:20px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  margin-bottom:25px;
+}
+header h1{color:#1e3c72;font-size:1.6rem;margin-bottom:10px;}
+header button{
+  margin:5px;
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#1e3c72;
+  color:#fff;
+}
+header button:hover{background:#2a5298;}
+
+.container{max-width:900px;margin:auto;}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+}
+.card{
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(10px);
+  border-radius:20px;
+  padding:30px 15px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
+  transition:0.3s;
+}
+.card:hover{
+  transform: translateY(-6px);
+  background: rgba(230,240,255,0.9);
+}
+.icon{font-size:2.8rem;margin-bottom:12px;}
+.card p{font-weight:bold;font-size:1.05rem;margin-top:8px;}
+
+.editable[contenteditable="true"]{
+  outline:2px dashed red;
+  background:#fff8c6;
+}
+
+.back{
+  margin-top:30px;
+  text-align:center;
+}
+.back button{
+  background:#1e3c72;
+  color:#fff;
+  border:none;
+  padding:10px 18px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:0.95rem;
+}
+.back button:hover{background:#2a5298;}
+
+a{text-decoration:none;color:inherit;}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1 class="editable" data-key="header-title">📊 Báo cáo</h1>
+  <button onclick="adminLogin()">🔐 Quản trị</button>
+  <button id="editBtn" onclick="toggleEdit()" style="display:none">✏️ Chỉnh sửa</button>
+  <button id="saveBtn" onclick="saveContent()" style="display:none">💾 Lưu</button>
+  <button id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Thoát</button>
+</header>
+
+<div class="container">
+
+  <!-- GRID CHÍNH -->
+  <div class="grid">
+
+    <!-- NGHỊ QUYẾT -->
+    <div class="card" onclick="toggleNghiQuyet()">
+      <div class="icon">📜</div>
+      <p class="editable" data-key="nghi-quyet">Nghị quyết</p>
+    </div>
+
+    <!-- Ý KIẾN ĐỀ NGHỊ -->
+    <a href="y-kien-de-nghi.html">
+      <div class="card">
+        <div class="icon">✍️</div>
+        <p class="editable" data-key="y-kien">Ý kiến đề nghị</p>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- 13 NGHỊ QUYẾT THEO THÁNG -->
+  <div id="nghiQuyetThang" style="display:none; margin-top:30px;">
+    <div class="grid">
+
+      <a href="nghi-quyet-thang-1.html"><div class="card"><p>Nghị quyết tháng 1</p></div></a>
+      <a href="nghi-quyet-thang-2.html"><div class="card"><p>Nghị quyết tháng 2</p></div></a>
+      <a href="nghi-quyet-thang-3.html"><div class="card"><p>Nghị quyết tháng 3</p></div></a>
+      <a href="nghi-quyet-thang-4.html"><div class="card"><p>Nghị quyết tháng 4</p></div></a>
+      <a href="nghi-quyet-thang-5.html"><div class="card"><p>Nghị quyết tháng 5</p></div></a>
+      <a href="nghi-quyet-thang-6.html"><div class="card"><p>Nghị quyết tháng 6</p></div></a>
+      <a href="nghi-quyet-thang-7.html"><div class="card"><p>Nghị quyết tháng 7</p></div></a>
+      <a href="nghi-quyet-thang-8.html"><div class="card"><p>Nghị quyết tháng 8</p></div></a>
+      <a href="nghi-quyet-thang-9.html"><div class="card"><p>Nghị quyết tháng 9</p></div></a>
+      <a href="nghi-quyet-thang-10.html"><div class="card"><p>Nghị quyết tháng 10</p></div></a>
+      <a href="nghi-quyet-thang-11.html"><div class="card"><p>Nghị quyết tháng 11</p></div></a>
+      <a href="nghi-quyet-thang-12.html"><div class="card"><p>Nghị quyết tháng 12</p></div></a>
+      <a href="nghi-quyet-chuyende.html"><div class="card"><p>Nghị quyết chuyên đề</p></div></a>
+
+    </div>
+  </div>
+
+  <div class="back">
+    <button onclick="window.location.href='index.html'">⬅ Quay lại</button>
+  </div>
+
+</div>
+
+<script>
+const ADMIN_PASSWORD = "100";
+let isAdmin = false;
+
+function adminLogin(){
+  const pass = prompt("Nhập mật khẩu quản trị:");
+  if(pass === ADMIN_PASSWORD){
+    isAdmin = true;
+    editBtn.style.display = saveBtn.style.display = logoutBtn.style.display = "inline-block";
+    alert("✅ Đã vào chế độ quản trị");
+  }else{
+    alert("❌ Mật khẩu không đúng");
+  }
+}
+
+function toggleEdit(){
+  if(!isAdmin) return;
+  document.querySelectorAll(".editable").forEach(el=>{
+    el.contentEditable = el.contentEditable !== "true";
+  });
+}
+
+function saveContent(){
+  if(!isAdmin) return;
+  document.querySelectorAll(".editable").forEach(el=>{
+    localStorage.setItem(el.dataset.key, el.innerHTML);
+  });
+  alert("💾 Đã lưu nội dung");
+}
+
+function loadContent(){
+  document.querySelectorAll(".editable").forEach(el=>{
+    const data = localStorage.getItem(el.dataset.key);
+    if(data) el.innerHTML = data;
+  });
+}
+
+function logoutAdmin(){
+  isAdmin = false;
+  document.querySelectorAll(".editable").forEach(el=>el.contentEditable=false);
+  editBtn.style.display = saveBtn.style.display = logoutBtn.style.display = "none";
+}
+
+function toggleNghiQuyet(){
+  const box = document.getElementById("nghiQuyetThang");
+  box.style.display = (box.style.display === "none") ? "block" : "none";
+}
+
+window.onload = loadContent;
+</script>
+
+</body>
+</html>

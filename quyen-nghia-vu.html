@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quyền và Nghĩa vụ quân nhân </title>
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family: Arial, sans-serif;
+  padding:20px;
+  background:#f0f8ff;
+}
+header {
+  background: rgba(255,255,255,0.8);
+  padding:20px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  backdrop-filter: blur(5px);
+}
+header h1 {
+  color:#007BFF;
+  font-size:1.7rem;
+}
+section {
+  max-width:750px;
+  margin:30px auto;
+}
+.grid-lessons {
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:10px;
+}
+.lesson-box {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+  border-radius:15px;
+  padding:15px;
+  cursor:pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.lesson-box:hover {
+  transform: translateY(-2px);
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+.lesson-header {
+  display:flex;
+  align-items:center;
+}
+.lesson-number {
+  font-size:1.2rem;
+  font-weight:bold;
+  margin-right:10px;
+  width:25px;
+  text-align:center;
+}
+.icon {
+  font-size:2rem;
+  margin-right:10px;
+  color:#32CD32;
+}
+.lesson-title {
+  font-weight:bold;
+}
+.lesson-content {
+  display:none;
+  margin-top:10px;
+  padding:10px;
+  background: rgba(255,255,255,0.8);
+  border-radius:8px;
+  line-height:1.5;
+}
+button {
+  background:#1e3c72;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:10px 15px;
+  cursor:pointer;
+  margin-bottom:15px;
+}
+button:hover {
+  background:#2a5298;
+  transform:translateY(-2px);
+}
+@media(max-width:500px){
+  .icon{font-size:1.5rem;}
+  .lesson-number{font-size:1rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Quyền và Nghĩa vụ quân nhân </h1>
+</header>
+
+<section>
+  <a href="pho-bien-gdpl.html">
+    <button>⏪ Quay lại</button>
+  </a>
+
+  <div class="grid-lessons">
+
+    <!-- Mục 1 -->
+    <div class="lesson-box" onclick="toggleContent(this, 1)">
+      <div class="lesson-header">
+        <div class="lesson-number">1</div>
+        <div class="icon">🛡️</div>
+        <div class="lesson-title">Quyền được bảo vệ</div>
+      </div>
+      <div class="lesson-content" id="content-1">
+        <ul>
+          <li>Được bảo vệ tính mạng, sức khỏe, danh dự và nhân phẩm.</li>
+          <li>Được nhận sự hỗ trợ từ đơn vị khi gặp nguy hiểm hoặc sự cố.</li>
+          <li>Được quyền khiếu nại nếu quyền lợi bị xâm hại trái pháp luật.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 2 -->
+    <div class="lesson-box" onclick="toggleContent(this, 2)">
+      <div class="lesson-header">
+        <div class="lesson-number">2</div>
+        <div class="icon">📜</div>
+        <div class="lesson-title">Quyền nhận thông tin</div>
+      </div>
+      <div class="lesson-content" id="content-2">
+        <ul>
+          <li>Được thông báo đầy đủ về nhiệm vụ, quyền lợi và nghĩa vụ.</li>
+          <li>Được giải thích các quy định nội bộ và pháp luật liên quan.</li>
+          <li>Được tiếp cận các hướng dẫn huấn luyện, bảo quản trang thiết bị và vũ khí.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 3 -->
+    <div class="lesson-box" onclick="toggleContent(this, 3)">
+      <div class="lesson-header">
+        <div class="lesson-number">3</div>
+        <div class="icon">🎖️</div>
+        <div class="lesson-title">Quyền được khen thưởng</div>
+      </div>
+      <div class="lesson-content" id="content-3">
+        <ul>
+          <li>Nhận giấy khen, huân chương, bằng khen khi hoàn thành xuất sắc nhiệm vụ.</li>
+          <li>Được thưởng vật chất hoặc ghi nhận thành tích trong hồ sơ cá nhân.</li>
+          <li>Khen thưởng minh bạch, công bằng, khuyến khích tinh thần tuân thủ kỷ luật.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 4 -->
+    <div class="lesson-box" onclick="toggleContent(this, 4)">
+      <div class="lesson-header">
+        <div class="lesson-number">4</div>
+        <div class="icon">⚖️</div>
+        <div class="lesson-title">Nghĩa vụ tuân thủ mệnh lệnh</div>
+      </div>
+      <div class="lesson-content" id="content-4">
+        <ul>
+          <li>Thực hiện nghiêm túc các mệnh lệnh của cấp trên.</li>
+          <li>Không tự ý thay đổi, bỏ qua hoặc trì hoãn mệnh lệnh.</li>
+          <li>Phối hợp đồng đội để hoàn thành nhiệm vụ đúng tiến độ.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 5 -->
+    <div class="lesson-box" onclick="toggleContent(this, 5)">
+      <div class="lesson-header">
+        <div class="lesson-number">5</div>
+        <div class="icon">🛡️</div>
+        <div class="lesson-title">Nghĩa vụ bảo vệ đơn vị và Tổ quốc</div>
+      </div>
+      <div class="lesson-content" id="content-5">
+        <ul>
+          <li>Bảo vệ tài sản, trang thiết bị và vũ khí của đơn vị.</li>
+          <li>Tham gia trực ban, huấn luyện và nhiệm vụ bảo vệ Tổ quốc.</li>
+          <li>Tuân thủ các quy định về an ninh và bảo mật thông tin.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 6 -->
+    <div class="lesson-box" onclick="toggleContent(this, 6)">
+      <div class="lesson-header">
+        <div class="lesson-number">6</div>
+        <div class="icon">📋</div>
+        <div class="lesson-title">Nghĩa vụ báo cáo và phản ánh</div>
+      </div>
+      <div class="lesson-content" id="content-6">
+        <ul>
+          <li>Báo cáo kịp thời các vi phạm, sự cố, tai nạn trong đơn vị.</li>
+          <li>Phản ánh tình huống pháp luật hoặc nội bộ tới cấp trên.</li>
+          <li>Hợp tác với thanh tra, kiểm tra khi được yêu cầu.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 7 -->
+    <div class="lesson-box" onclick="toggleContent(this, 7)">
+      <div class="lesson-header">
+        <div class="lesson-number">7</div>
+        <div class="icon">🤝</div>
+        <div class="lesson-title">Quyền và nghĩa vụ phối hợp đồng đội</div>
+      </div>
+      <div class="lesson-content" id="content-7">
+        <ul>
+          <li>Hợp tác chặt chẽ với đồng đội để hoàn thành nhiệm vụ.</li>
+          <li>Chia sẻ thông tin cần thiết, hỗ trợ khi đồng đội gặp khó khăn.</li>
+          <li>Thực hiện kỷ luật tập thể và giúp xây dựng môi trường làm việc chuyên nghiệp.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 8 -->
+    <div class="lesson-box" onclick="toggleContent(this, 8)">
+      <div class="lesson-header">
+        <div class="lesson-number">8</div>
+        <div class="icon">📚</div>
+        <div class="lesson-title">Nghĩa vụ học tập, nâng cao trình độ</div>
+      </div>
+      <div class="lesson-content" id="content-8">
+        <ul>
+          <li>Tham gia huấn luyện, học tập nâng cao kiến thức chuyên môn.</li>
+          <li>Học các quy định pháp luật, nội bộ và chính sách quân đội.</li>
+          <li>Áp dụng kiến thức đã học vào thực hiện nhiệm vụ hiệu quả.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 9 -->
+    <div class="lesson-box" onclick="toggleContent(this, 9)">
+      <div class="lesson-header">
+        <div class="lesson-number">9</div>
+        <div class="icon">📝</div>
+        <div class="lesson-title">Nghĩa vụ ghi chép và lưu trữ</div>
+      </div>
+      <div class="lesson-content" id="content-9">
+        <ul>
+          <li>Lưu trữ hồ sơ, sổ sách theo quy định.</li>
+          <li>Ghi chép kết quả nhiệm vụ, huấn luyện và kiểm tra.</li>
+          <li>Bảo đảm thông tin chính xác và kịp thời khi cần báo cáo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 10 -->
+    <div class="lesson-box" onclick="toggleContent(this, 10)">
+      <div class="lesson-header">
+        <div class="lesson-number">10</div>
+        <div class="icon">💬</div>
+        <div class="lesson-title">Quyền khiếu nại và đề xuất</div>
+      </div>
+      <div class="lesson-content" id="content-10">
+        <ul>
+          <li>Được quyền khiếu nại nếu bị xử lý sai hoặc xâm hại quyền lợi.</li>
+          <li>Được đề xuất sáng kiến, ý kiến cải tiến hoạt động đơn vị.</li>
+          <li>Các đề xuất và khiếu nại sẽ được xem xét công bằng, minh bạch.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 11 -->
+    <div class="lesson-box" onclick="toggleContent(this, 11)">
+      <div class="lesson-header">
+        <div class="lesson-number">11</div>
+        <div class="icon">🧹</div>
+        <div class="lesson-title">Nghĩa vụ bảo quản trang thiết bị</div>
+      </div>
+      <div class="lesson-content" id="content-11">
+        <ul>
+          <li>Bảo quản và sử dụng đúng cách vũ khí, trang bị và phương tiện công vụ.</li>
+          <li>Kiểm tra định kỳ tình trạng thiết bị và báo cáo sự cố ngay lập tức.</li>
+          <li>Không sử dụng trang thiết bị cho mục đích cá nhân trái phép.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 12 -->
+    <div class="lesson-box" onclick="toggleContent(this, 12)">
+      <div class="lesson-header">
+        <div class="lesson-number">12</div>
+        <div class="icon">⏱️</div>
+        <div class="lesson-title">Nghĩa vụ chấp hành giờ giấc và trực ban</div>
+      </div>
+      <div class="lesson-content" id="content-12">
+        <ul>
+          <li>Tuân thủ giờ giấc trong đơn vị, có mặt đúng giờ khi được phân công.</li>
+          <li>Thực hiện đầy đủ nhiệm vụ trực ban, trực chiến, trực huấn luyện theo quy định.</li>
+          <li>Không tự ý rời vị trí hoặc bỏ trực mà không được phép.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 13 -->
+    <div class="lesson-box" onclick="toggleContent(this, 13)">
+      <div class="lesson-header">
+        <div class="lesson-number">13</div>
+        <div class="icon">🌐</div>
+        <div class="lesson-title">Nghĩa vụ bảo mật và an ninh thông tin</div>
+      </div>
+      <div class="lesson-content" id="content-13">
+        <ul>
+          <li>Không tiết lộ thông tin nội bộ, bí mật quân sự hoặc dữ liệu nhạy cảm.</li>
+          <li>Sử dụng công nghệ thông tin và mạng nội bộ theo quy định của đơn vị.</li>
+          <li>Báo cáo ngay các trường hợp nghi ngờ rò rỉ thông tin hoặc vi phạm an ninh.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 14 -->
+    <div class="lesson-box" onclick="toggleContent(this, 14)">
+      <div class="lesson-header">
+        <div class="lesson-number">14</div>
+        <div class="icon">🛠️</div>
+        <div class="lesson-title">Nghĩa vụ bảo dưỡng trang thiết bị và huấn luyện</div>
+      </div>
+      <div class="lesson-content" id="content-14">
+        <ul>
+          <li>Thực hiện bảo dưỡng, kiểm tra trang thiết bị, phương tiện và vũ khí định kỳ.</li>
+          <li>Tham gia huấn luyện kỹ năng chuyên môn và quân sự đầy đủ.</li>
+          <li>Áp dụng kiến thức và kỹ năng đã học để hoàn thành nhiệm vụ hiệu quả.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mục 15 -->
+    <div class="lesson-box" onclick="toggleContent(this, 15)">
+      <div class="lesson-header">
+        <div class="lesson-number">15</div>
+        <div class="icon">💡</div>
+        <div class="lesson-title">Quyền đề xuất sáng kiến và cải tiến</div>
+      </div>
+      <div class="lesson-content" id="content-15">
+        <ul>
+          <li>Được quyền đề xuất sáng kiến, cải tiến phương pháp làm việc, huấn luyện và tổ chức.</li>
+          <li>Mọi sáng kiến sẽ được xem xét công bằng, có thể khen thưởng nếu có hiệu quả.</li>
+          <li>Khuyến khích tinh thần sáng tạo và đóng góp xây dựng đơn vị.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+function toggleContent(box, num){
+  const content = box.querySelector(`#content-${num}`);
+  const isVisible = content.style.display === "block";
+  // Ẩn tất cả nội dung
+  document.querySelectorAll('.lesson-content').forEach(c => c.style.display = 'none');
+  // Mở mục hiện tại nếu chưa mở
+  if(!isVisible){
+    content.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>

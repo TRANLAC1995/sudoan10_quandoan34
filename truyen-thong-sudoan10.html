@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Truyền thống Sư đoàn 10</title>
+
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
+body {
+  font-family: Arial, sans-serif;
+  padding:20px;
+  background:#f0f8ff;
+}
+
+header {
+  background: rgba(255,255,255,0.85);
+  padding:20px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+header h1 {
+  color:#c00000;
+  font-size:1.7rem;
+}
+
+section {
+  max-width:900px;
+  margin:30px auto;
+}
+
+/* GRID 3 MỤC */
+.grid-main {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:20px;
+  margin-top:20px;
+}
+
+.square-main {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+  border-radius:20px;
+  text-align:center;
+  padding:40px 15px;
+  cursor:pointer;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.square-main:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.square-main .icon {
+  font-size:3.5rem;
+  margin-bottom:15px;
+}
+
+.square-main p {
+  font-size:1.15rem;
+  font-weight:bold;
+}
+
+button {
+  background:#1e3c72;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:10px 15px;
+  cursor:pointer;
+  margin-bottom:15px;
+  font-size:0.9em;
+}
+button:hover {
+  background:#2a5298;
+}
+
+/* RESPONSIVE */
+@media(max-width:800px){
+  .grid-main {grid-template-columns: 1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Truyền thống Sư đoàn 10</h1>
+</header>
+
+<section>
+
+<a href="index.html">
+  <button>⏪ Quay lại</button>
+</a>
+
+<div class="grid-main">
+
+  <!-- Quá trình hình thành & phát triển -->
+  <div class="square-main" onclick="location.href='qn-hinhthanh-phattrien.html'">
+    <div class="icon">📜</div>
+    <p>Quá trình hình thành<br>và phát triển</p>
+  </div>
+
+  <!-- Truyền thống tiêu biểu -->
+  <div class="square-main" onclick="location.href='qn-chucnang-nhiemvu.html'">
+    <div class="icon">🎯</div>
+    <p>Truyền thống tiêu biểu</p>
+  </div>
+
+  <!-- Lãnh đạo hiện nay -->
+  <div class="square-main" onclick="location.href='qn-lanhdao.html'">
+    <div class="icon">⭐</div>
+    <p>Lãnh đạo Sư đoàn 10<br>hiện nay</p>
+  </div>
+
+</div>
+
+</section>
+
+</body>
+</html>

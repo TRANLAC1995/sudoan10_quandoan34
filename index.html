@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Học tập</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;padding:20px;}
+
+/* Hình nền */
+#background{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:url('background.jpg') no-repeat center center fixed;
+  background-size:cover;
+  z-index:-1;
+}
+
+/* Header */
+header{
+  background:rgba(255,255,255,.85);
+  padding:20px;text-align:center;
+  position:fixed;top:0;width:100%;z-index:1000;
+  border-radius:0 0 20px 20px;
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+}
+header h1{color:#007bff;font-size:2rem;}
+
+/* Section & Card */
+section{max-width:1000px;margin:120px auto 40px;}
+.card{
+  background:rgba(255,255,255,.7);
+  padding:30px;
+  margin:25px 0;
+  border-radius:20px;
+  box-shadow:0 6px 15px rgba(0,0,0,.3);
+}
+.card h2{margin-bottom:20px;color:#1e3c72;}
+
+/* Grid các ô vuông */
+.grid-lessons{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+}
+
+/* Ô vuông trong suốt + blur */
+.square-lesson{
+  padding:40px 20px;
+  border-radius:20px;
+  text-align:center;
+  font-size:1.1rem;
+  font-weight:bold;
+  color:#1e3c72;
+  transition:.3s, transform .3s;
+  box-shadow:0 4px 10px rgba(0,0,0,.25);
+  background-color: rgba(255, 255, 255, 0.35); /* pastel trong suốt */
+  backdrop-filter: blur(5px);
+}
+.square-lesson a{text-decoration:none;color:inherit;display:block;}
+.square-lesson:hover{
+  transform:translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Icon */
+.icon{font-size:2.5rem;margin-bottom:10px;}
+
+/* Responsive */
+@media(max-width:600px){
+  .grid-lessons{grid-template-columns:1fr;}
+}
+/* Hiệu ứng Card xuất hiện từ từ */
+.card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: cardFadeIn 1s ease forwards;
+}
+
+/* Card xuất hiện lần lượt */
+.card:nth-of-type(1) {
+  animation-delay: 0.2s;
+}
+
+.card:nth-of-type(2) {
+  animation-delay: 0.5s;
+}
+
+.card:nth-of-type(3) {
+  animation-delay: 0.8s;
+}
+
+.card:nth-of-type(4) {
+  animation-delay: 1.1s;
+}
+
+.card:nth-of-type(5) {
+  animation-delay: 1.4s;
+}
+
+/* Chuyển động xuất hiện */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+ 
+
+/* Nút điều khiển nhạc */
+.music-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 2000;
+  background: rgba(255,255,255,.9);
+  padding: 12px 18px;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1e3c72;
+}
+
+</style>
+</head>
+
+<body>
+<!-- NHẠC NỀN -->
+<audio id="backgroundMusic" loop>
+  <source src="nhacnen.mp3" type="audio/mpeg">
+</audio>
+
+<!-- NÚT BẬT TẮT NHẠC -->
+<button class="music-control" id="musicButton" onclick="toggleMusic()">
+  ▶️ Bật nhạc
+</button>
+<div id="background"></div>
+
+<header>
+  <h1>THƯ VIỆN HỌC TẬP ĐIỆN TỬ</h1>
+</header>
+
+<section>
+
+  <!-- CARD 0: Giới thiệu -->
+  <div class="card">
+    <h2>👋 Chào mừng</h2>
+    <p>Đây là trang học tập của đơn vị, mời các đồng chí tham gia học tập đầy đủ các nội dung được cung cấp. Chúc các đồng chí học tập hiệu quả và nâng cao kiến thức!</p>
+  </div>
+ <!-- CARD 1: Truyền thống đơn vị -->
+<div class="card">
+  <h2> Truyền thống đơn vị</h2>
+  <div class="grid-lessons">
+    <div class="square-lesson">
+      <a href="truyen-thong-quandoan34.html">
+         Truyền thống Quân đoàn 34
+      </a>
+    </div>
+    <div class="square-lesson">
+      <a href="truyen-thong-sudoan10.html">
+         Truyền thống Sư đoàn 10
+      </a>
+    </div>
+    <div class="square-lesson">
+      <a href="Anhdonvi.html">
+         Ảnh đơn vị
+      </a>
+    </div>
+    </div>
+ </div>
+  <!-- CARD 2: Giáo dục chính trị -->
+  <div class="card">
+    <h2>📚 Giáo dục chính trị & Thông tin</h2>
+    <div class="grid-lessons">
+      <div class="square-lesson"><a href="gdct-co-ban.html">📘 Giáo dục chính trị cơ bản</a></div>
+      <div class="square-lesson"><a href="pho-bien-gdpl.html">📖 Phổ biến pháp luật</a></div>
+     <div class="square-lesson">
+  <a href="nam-quan-ly-tu-tuong.html">🧠 Nắm tư tưởng</a>
+</div>
+
+     </div>
+
+  </div>
+  <!-- CARD 3: Lãnh đạo & Học tập -->
+  <div class="card">
+    <h2>🗂️ Lãnh đạo & Học tập</h2>
+    <div class="grid-lessons">
+      <div class="square-lesson"><a href="bao-cao-cap-tren.html">📊 Nghị quyết lãnh đạo</a></div>
+     <div class="square-lesson">
+  <a href="https://vr360.yoolife.vn/bao-tang-lich-su-quan-su-viet-nam-zmuseumc118u26724" target="_blank">🏛️ Tham quan bảo tàng</a>
+</div>
+
+      <div class="square-lesson"><a href="binh-dan-hoc-vu.html">📝 Bình dân học vụ số</a></div>
+      <div class="square-lesson"><a href="van-ban-huong-dan.html">📄 Văn bản hướng dẫn</a></div>
+    </div>
+  </div>
+
+ <!-- CARD 4: Bài kiểm tra -->
+<div class="card">
+  
+<h2>📝 Bài kiểm tra</h2>
+  <div class="grid-lessons">
+  
+  <div class="square-lesson">
+      
+<a href="bai-kiem-tra.html">📋 Bài kiểm tra 1</a>
+    </div>
+
+   
+ <div class="square-lesson">
+    
+  <a href="ket-qua-kiem-tra.html">📊 Kết quả kiểm tra</a>
+  
+  </div>
+
+   
+ <div class="square-lesson">
+  
+    <a href="loi-bac-ho-day.html">⭐ Lời Bác Hồ dạy ngày này năm xưa</a>
+  
+  </div>
+
+  
+  <div class="square-lesson">
+ 
+     <a href="tinh-luong.html">💰 Tính lương</a>
+  
+  </div>
+ 
+ </div>
+</div>
+
+
+    
+    </div>
+
+
+</section>
+
+
+</section>
+
+<script>
+const music = document.getElementById("backgroundMusic");
+const musicButton = document.getElementById("musicButton");
+
+music.volume = 0.4;
+
+// Kiểm tra lỗi file nhạc
+music.addEventListener("error", function() {
+  musicButton.innerHTML = "❌ Không tìm thấy nhạc";
+  alert("Không tải được file nhacnen.mp3. Hãy kiểm tra tên và vị trí file!");
+});
+
+// Thử tự động phát nhạc
+window.addEventListener("load", function() {
+  music.play().then(() => {
+    musicButton.innerHTML = "🔊 Tắt nhạc";
+  }).catch(() => {
+    musicButton.innerHTML = "▶️ Bật nhạc";
+  });
+});
+
+// Bật/tắt nhạc
+function toggleMusic() {
+  if (music.paused) {
+    music.play().then(() => {
+      musicButton.innerHTML = "🔊 Tắt nhạc";
+    }).catch((error) => {
+      alert("Không phát được nhạc. Hãy kiểm tra file MP3!");
+      console.log(error);
+    });
+  } else {
+    music.pause();
+    musicButton.innerHTML = "▶️ Bật nhạc";
+  }
+}
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giáo dục chính trị</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;padding:20px;}
+header{
+  background:rgba(255,255,255,.9);
+  padding:15px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  box-shadow:0 4px 10px rgba(0,0,0,.4);
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:1000;
+}
+header h1{color:#007bff;margin-bottom:10px;}
+header button{margin:3px;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;background:#1e3c72;color:#fff;}
+section{max-width:900px;margin:120px auto 40px;}
+.card-wrapper {margin-bottom:20px; position: relative;}
+.card{
+  background:rgba(255,255,255,.65);
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 6px 15px rgba(0,0,0,.3);
+  position: relative;
+}
+.editable[contenteditable="true"]{outline:2px dashed red;background:#fff8c6;}
+.header{cursor:pointer;}
+.content{display:none;margin-top:15px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="editable" data-key="title-main">Giáo dục chính trị</h1>
+  <button onclick="adminLogin()">🔐 Quản trị</button>
+  <button id="editBtn" onclick="toggleEdit()" style="display:none">✏️ Chỉnh sửa</button>
+  <button id="saveBtn" onclick="saveContent()" style="display:none">💾 Lưu</button>
+  <button id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Thoát</button>
+</header>
+
+<section>
+
+<!-- Bài 1 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part1-title" onclick="toggleContent(this)">Bài 1: </h2>
+    <div class="content">
+      <p class="editable" data-key="part1-text1">...</p>
+      <p class="editable" data-key="part1-text2">...</p>
+      <p class="editable" data-key="part1-text3">...</p>
+      <p class="editable" data-key="part1-text4">...</p>
+      <p class="editable" data-key="part1-text5">...</p>
+      <p class="editable" data-key="part1-text6">...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 2 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part2-title" onclick="toggleContent(this)">Bài 2: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part2-li1">...</li>
+        <li class="editable" data-key="part2-li2">...</li>
+        <li class="editable" data-key="part2-li3">...</li>
+        <li class="editable" data-key="part2-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 3 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part3-title" onclick="toggleContent(this)">Bài 3: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part3-li1">...</li>
+        <li class="editable" data-key="part3-li2">...</li>
+        <li class="editable" data-key="part3-li3">...</li>
+        <li class="editable" data-key="part3-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 4 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part4-title" onclick="toggleContent(this)">Bài 4: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part4-li1">...</li>
+        <li class="editable" data-key="part4-li2">...</li>
+        <li class="editable" data-key="part4-li3">...</li>
+        <li class="editable" data-key="part4-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 5 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part5-title" onclick="toggleContent(this)">Bài 5: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part5-li1">...</li>
+        <li class="editable" data-key="part5-li2">...</li>
+        <li class="editable" data-key="part5-li3">...</li>
+        <li class="editable" data-key="part5-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 6 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part6-title" onclick="toggleContent(this)">Bài 6: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part6-li1">...</li>
+        <li class="editable" data-key="part6-li2">...</li>
+        <li class="editable" data-key="part6-li3">...</li>
+        <li class="editable" data-key="part6-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 7 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part7-title" onclick="toggleContent(this)">Bài 7: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part7-li1">...</li>
+        <li class="editable" data-key="part7-li2">...</li>
+        <li class="editable" data-key="part7-li3">...</li>
+        <li class="editable" data-key="part7-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 8 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part8-title" onclick="toggleContent(this)">Bài 8: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part8-li1">...</li>
+        <li class="editable" data-key="part8-li2">...</li>
+        <li class="editable" data-key="part8-li3">...</li>
+        <li class="editable" data-key="part8-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 9 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part9-title" onclick="toggleContent(this)">Bài 9: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part9-li1">...</li>
+        <li class="editable" data-key="part9-li2">...</li>
+        <li class="editable" data-key="part9-li3">...</li>
+        <li class="editable" data-key="part9-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Bài 10 -->
+<div class="card-wrapper">
+  <div class="card">
+    <h2 class="editable header" data-key="part10-title" onclick="toggleContent(this)">Bài 10: </h2>
+    <div class="content">
+      <ul>
+        <li class="editable" data-key="part10-li1">...</li>
+        <li class="editable" data-key="part10-li2">...</li>
+        <li class="editable" data-key="part10-li3">...</li>
+        <li class="editable" data-key="part10-li4">...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<div style="text-align:center; margin:30px 0;">
+  <button onclick="window.location.href='gdct-co-ban.html'" style="background:#1e3c72;color:#fff;border:none;padding:10px 18px;border-radius:12px;cursor:pointer;font-size:0.95rem;">⬅ Quay lại</button>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "100"; 
+let isAdmin = false;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwWi8diHZ0yAHkpyQ_DyBf9fsZCkOqeHw8pOqrfnqmwLowi1KFtHNA_yhYDu03BlkVrSQ/exec";
+
+// Hiện/ẩn nội dung khi click
+function toggleContent(header){
+  const content = header.nextElementSibling;
+  content.style.display = content.style.display === "none" ? "block" : "none";
+}
+
+// Quản trị
+function adminLogin() {
+  const pass = prompt("Nhập mật khẩu quản trị:");
+  if (pass === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById("editBtn").style.display = 
+    document.getElementById("saveBtn").style.display = 
+    document.getElementById("logoutBtn").style.display = "inline-block";
+    alert("✅ Đã vào chế độ quản trị");
+  }
+}
+
+function toggleEdit() {
+  if (!isAdmin) return;
+  document.querySelectorAll(".editable").forEach(el => {
+    el.contentEditable = el.contentEditable !== "true";
+  });
+}
+
+async function saveContent() {
+  if (!isAdmin) return;
+  const data = {};
+  document.querySelectorAll(".editable").forEach(el => {
+    data[el.dataset.key] = el.innerHTML;
+  });
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    alert("💾 Đã lưu nội dung lên Google Sheet: " + result.status);
+  } catch (err) {
+    alert("❌ Lỗi lưu: " + err.message);
+  }
+}
+
+async function loadContent() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    document.querySelectorAll(".editable").forEach(el => {
+      if (data[el.dataset.key]) el.innerHTML = data[el.dataset.key];
+    });
+  } catch (err) {
+    console.error("❌ Lỗi tải dữ liệu:", err);
+  }
+}
+
+function logoutAdmin() {
+  isAdmin = false;
+  document.querySelectorAll(".editable").forEach(el => el.contentEditable = false);
+}
+
+window.onload = loadContent;
+</script>
+
+</body>
+</html>

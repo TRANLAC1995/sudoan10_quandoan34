@@ -1,0 +1,844 @@
+﻿
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tính lương quân nhân</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url("background.jpg") center center / cover fixed;
+  color: #263445;
+}
+
+/* HEADER */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: rgba(255,255,255,0.93);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  padding: 15px 10px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  color: #07569b;
+  font-size: 23px;
+}
+
+/* NỘI DUNG */
+section {
+  max-width: 1000px;
+  margin: 95px auto 30px;
+  padding: 10px;
+}
+
+.back {
+  display: inline-block;
+  padding: 10px 17px;
+  border: none;
+  border-radius: 9px;
+  background: #1769aa;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.card {
+  background: rgba(255,255,255,0.94);
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+
+.card h2 {
+  color: #07569b;
+  font-size: 20px;
+  border-bottom: 2px solid #dceaf6;
+  padding-bottom: 12px;
+  margin-top: 0;
+}
+
+.card h3 {
+  color: #1769aa;
+  font-size: 16px;
+  margin-top: 22px;
+}
+
+.note {
+  background: #eef6ff;
+  border-left: 4px solid #2584cb;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 17px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 15px;
+}
+
+.field {
+  min-width: 0;
+}
+
+.field label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #cbd8e5;
+  border-radius: 9px;
+  font-size: 15px;
+  background: white;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #1976c9;
+  box-shadow: 0 0 0 2px rgba(25,118,201,0.12);
+}
+
+.hint {
+  color: #777;
+  font-size: 12px;
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+/* TIỀN ĂN */
+.meal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+
+.meal-title {
+  font-weight: bold;
+  color: #345;
+  margin-bottom: 7px;
+}
+
+.meal-row input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #cbd8e5;
+  border-radius: 8px;
+}
+
+.quick-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.quick-buttons button {
+  padding: 8px 13px;
+  border: none;
+  border-radius: 7px;
+  background: #e4f0fb;
+  color: #07569b;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* KẾT QUẢ */
+.result-card {
+  background: linear-gradient(135deg,#07569b,#1884c7);
+  color: white;
+  border-radius: 17px;
+  padding: 23px;
+  text-align: center;
+}
+
+.result-card .small {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.result-card .amount {
+  font-size: clamp(25px,5vw,36px);
+  font-weight: bold;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+
+.result-card .sub {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.detail-table td,
+.detail-table th {
+  border-bottom: 1px solid #e4eaf0;
+  padding: 12px 8px;
+  text-align: left;
+}
+
+.detail-table td:last-child,
+.detail-table th:last-child {
+  text-align: right;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.detail-table th {
+  color: #07569b;
+  background: #eef6ff;
+}
+
+.total-row {
+  background: #eef6ff;
+  font-weight: bold;
+}
+
+.final-row {
+  background: #e2f4e9;
+  color: #13733a;
+  font-weight: bold;
+}
+
+.negative {
+  color: #d04444;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 17px;
+}
+
+.action-buttons button {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px;
+  border: none;
+  border-radius: 9px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-reset {
+  background: #e8edf2;
+  color: #344;
+}
+
+.btn-print {
+  background: #1769aa;
+  color: white;
+}
+
+footer {
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  padding: 15px;
+}
+
+@media(max-width:600px) {
+  header h1 {
+    font-size: 18px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .meal-row {
+    gap: 6px;
+  }
+
+  .meal-row input {
+    font-size: 13px;
+  }
+
+  .detail-table {
+    font-size: 12px;
+  }
+
+  .detail-table td,
+  .detail-table th {
+    padding: 10px 5px;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  header, .back, .action-buttons, footer,
+  .input-card {
+    display: none !important;
+  }
+
+  section {
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💰 TÍNH LƯƠNG QUÂN NHÂN</h1>
+</header>
+
+<section>
+
+<a href="index.html">
+  <button class="back">⏪ Quay lại</button>
+</a>
+
+<!-- NHẬP THÔNG SỐ -->
+<div class="card input-card">
+
+<h2>📋 I. THÔNG SỐ TÍNH LƯƠNG</h2>
+
+<div class="note">
+  Công cụ tính lương dành cho quân nhân. Nhập hệ số lương,
+  thời gian công tác và các khoản phụ cấp để tự động tính
+  tổng thu nhập, các khoản khấu trừ và tiền thực lĩnh.
+</div>
+
+<h3>1. Lương cơ bản và hệ số</h3>
+
+<div class="grid">
+
+  <div class="field">
+    <label>Mức lương cơ sở (đồng)</label>
+    <input type="number" id="baseSalary" value="2530000" min="0">
+    <div class="hint">Mặc định 2.530.000 đồng, có thể thay đổi.</div>
+  </div>
+
+  <div class="field">
+    <label>Cấp bậc quân hàm</label>
+    <select id="rank" onchange="selectRank()">
+      <option value="">Tự nhập hệ số</option>
+      <option value="3.20">Hạ sĩ</option>
+      <option value="3.50">Trung sĩ</option>
+      <option value="3.80">Thượng sĩ</option>
+      <option value="4.20">Thiếu úy</option>
+      <option value="4.60">Trung úy</option>
+      <option value="5.00">Thượng úy</option>
+      <option value="5.40" selected>Đại úy</option>
+      <option value="6.00">Thiếu tá</option>
+      <option value="6.60">Trung tá</option>
+      <option value="7.30">Thượng tá</option>
+      <option value="8.00">Đại tá</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Hệ số lương</label>
+    <input type="number" id="salaryCoefficient" value="5.4" step="0.01" min="0">
+  </div>
+
+  <div class="field">
+    <label>Số năm công tác</label>
+    <input type="number" id="seniorityYears" value="12" min="0" step="1">
+    <div class="hint">Tự tính phụ cấp thâm niên theo số năm.</div>
+  </div>
+
+</div>
+
+<h3>2. Các khoản phụ cấp tính theo hệ số</h3>
+
+<div class="grid">
+
+  <div class="field">
+    <label>Phụ cấp chức vụ (hệ số)</label>
+    <input type="number" id="positionCoeff" value="0.3" step="0.01" min="0">
+  </div>
+
+  <div class="field">
+    <label>Phụ cấp trách nhiệm / Đảng / khác (hệ số)</label>
+    <input type="number" id="otherCoeff" value="0" step="0.01" min="0">
+  </div>
+
+  <div class="field">
+    <label>Hệ số phụ cấp vượt khung</label>
+    <input type="number" id="overCoeff" value="0" step="0.01" min="0">
+    <div class="hint">Nhập 0 nếu không có.</div>
+  </div>
+
+  <div class="field">
+    <label>Số năm hưởng vượt khung</label>
+    <input type="number" id="overYears" value="0" min="0" step="1">
+  </div>
+
+</div>
+
+<h3>3. Các khoản phụ cấp tính theo tỷ lệ %</h3>
+
+<div class="grid">
+
+  <div class="field">
+    <label>Phụ cấp công vụ (%)</label>
+    <input type="number" id="publicPercent" value="25" min="0" step="0.1">
+  </div>
+
+  <div class="field">
+    <label>Phụ cấp đặc thù ngành (%)</label>
+    <input type="number" id="specialPercent" value="20" min="0" step="0.1">
+  </div>
+
+  <div class="field">
+    <label>Phụ cấp đơn vị (%)</label>
+    <input type="number" id="unitPercent" value="20" min="0" step="0.1">
+  </div>
+
+  <div class="field">
+    <label>Phụ cấp khác theo tỷ lệ (%)</label>
+    <input type="number" id="otherPercent" value="0" min="0" step="0.1">
+  </div>
+
+</div>
+
+<div class="hint">
+  Các khoản phụ cấp theo tỷ lệ được tính trên lương ngạch bậc.
+  Hãy điều chỉnh tỷ lệ theo chế độ thực tế được hưởng.
+</div>
+
+<h3>4. Các khoản khấu trừ</h3>
+
+<div class="grid">
+
+  <div class="field">
+    <label>Tỷ lệ đóng BHXH (%)</label>
+    <input type="number" id="insurancePercent" value="8" min="0" max="100" step="0.1">
+    <div class="hint">Mặc định 8% theo công thức tham khảo.</div>
+  </div>
+
+  <div class="field">
+    <label>Khấu trừ khác (đồng)</label>
+    <input type="number" id="otherDeduction" value="0" min="0">
+  </div>
+
+</div>
+
+<h3>5. Khấu trừ tiền ăn</h3>
+
+<div class="quick-buttons">
+  <button type="button" onclick="setMeals(30)">30 bữa</button>
+  <button type="button" onclick="setMeals(0)">Xóa tiền ăn</button>
+</div>
+
+<div class="meal-row">
+  <div>
+    <div class="meal-title">Bữa sáng</div>
+    <input type="number" id="breakfastCount" value="0" min="0">
+    <div class="hint">Số bữa</div>
+    <input type="number" id="breakfastPrice" value="14400" min="0">
+    <div class="hint">Đơn giá/bữa</div>
+  </div>
+
+  <div>
+    <div class="meal-title">Bữa trưa</div>
+    <input type="number" id="lunchCount" value="0" min="0">
+    <div class="hint">Số bữa</div>
+    <input type="number" id="lunchPrice" value="28800" min="0">
+    <div class="hint">Đơn giá/bữa</div>
+  </div>
+
+  <div>
+    <div class="meal-title">Bữa tối</div>
+    <input type="number" id="dinnerCount" value="0" min="0">
+    <div class="hint">Số bữa</div>
+    <input type="number" id="dinnerPrice" value="28800" min="0">
+    <div class="hint">Đơn giá/bữa</div>
+  </div>
+</div>
+
+<div class="action-buttons">
+  <button class="btn-reset" onclick="resetForm()">↻ Nhập lại</button>
+  <button class="btn-print" onclick="window.print()">🖨 In bảng lương</button>
+</div>
+
+</div>
+
+
+<!-- KẾT QUẢ -->
+<div class="card">
+
+<h2>💵 II. KẾT QUẢ TÍNH LƯƠNG</h2>
+
+<div class="result-card">
+  <div class="small">SỐ TIỀN THỰC LĨNH HÀNG THÁNG</div>
+  <div class="amount" id="netSalary">0 VNĐ</div>
+  <div class="sub" id="summary">
+    Tổng thu nhập sau khi trừ các khoản khấu trừ
+  </div>
+</div>
+
+<h3>Chi tiết các khoản thu nhập và khấu trừ</h3>
+
+<table class="detail-table">
+<tbody id="detailBody">
+</tbody>
+</table>
+
+</div>
+
+<div class="card">
+<h2>📌 III. NGUYÊN TẮC TÍNH TOÁN</h2>
+
+<p><b>1. Lương ngạch bậc:</b></p>
+<p>Hệ số lương × Mức lương cơ sở.</p>
+
+<p><b>2. Phụ cấp thâm niên:</b></p>
+<p>Từ đủ 5 năm hưởng 5%; mỗi năm tiếp theo tăng thêm 1%, tính trên lương ngạch bậc.</p>
+
+<p><b>3. Phụ cấp công vụ:</b></p>
+<p>Tính theo tỷ lệ phần trăm được nhập, mặc định 25%.</p>
+
+<p><b>4. Phụ cấp chức vụ và phụ cấp hệ số khác:</b></p>
+<p>Hệ số phụ cấp × Mức lương cơ sở.</p>
+
+<p><b>5. Phụ cấp vượt khung:</b></p>
+<p>Tính theo hệ số vượt khung và số năm hưởng, theo quy tắc 5% sau đủ 3 năm, mỗi năm tiếp theo tăng 1%.</p>
+
+<p><b>6. BHXH:</b></p>
+<p>Mặc định tính 8% trên lương ngạch bậc, phụ cấp thâm niên, phụ cấp chức vụ/trách nhiệm và vượt khung.</p>
+
+<p><b>7. Thực lĩnh:</b></p>
+<p>Tổng thu nhập trừ BHXH, tiền ăn và các khoản khấu trừ khác.</p>
+
+<div class="note">
+  Lưu ý: Đây là công cụ ước tính theo các thông số nhập vào và
+  cách tính tham khảo từ trang VnFree. Không thay thế bảng lương
+  chính thức của cơ quan tài chính. Cần kiểm tra căn cứ tính và
+  đối tượng được hưởng từng phụ cấp trước khi sử dụng kết quả.
+</div>
+</div>
+
+</section>
+
+<footer>
+  CÔNG CỤ TÍNH LƯƠNG QUÂN NHÂN
+</footer>
+
+
+<script>
+
+/************************************************************
+ * HÀM ĐỊNH DẠNG TIỀN
+ ************************************************************/
+
+function money(value) {
+  return Math.round(value).toLocaleString("vi-VN") + " VNĐ";
+}
+
+function getValue(id) {
+  const value = Number(document.getElementById(id).value);
+  return Number.isFinite(value) ? value : 0;
+}
+
+
+/************************************************************
+ * CHỌN HỆ SỐ THEO QUÂN HÀM
+ ************************************************************/
+
+function selectRank() {
+  const rank = document.getElementById("rank").value;
+
+  if (rank !== "") {
+    document.getElementById("salaryCoefficient").value = rank;
+  }
+
+  calculateSalary();
+}
+
+
+/************************************************************
+ * TÍNH TIỀN ĂN NHANH
+ ************************************************************/
+
+function setMeals(count) {
+  document.getElementById("breakfastCount").value = count;
+  document.getElementById("lunchCount").value = count;
+  document.getElementById("dinnerCount").value = count;
+
+  calculateSalary();
+}
+
+
+/************************************************************
+ * TÍNH LƯƠNG
+ ************************************************************/
+
+function calculateSalary() {
+
+  // Mức lương và hệ số
+  const base = getValue("baseSalary");
+  const coefficient = getValue("salaryCoefficient");
+  const years = Math.floor(getValue("seniorityYears"));
+
+  // Lương ngạch bậc
+  const gradeSalary = base * coefficient;
+
+  // Phụ cấp thâm niên
+  let seniorityPercent = 0;
+
+  if (years >= 5) {
+    seniorityPercent = 5 + (years - 5);
+  }
+
+  const seniority = gradeSalary * seniorityPercent / 100;
+
+  // Phụ cấp chức vụ
+  const position = base * getValue("positionCoeff");
+
+  // Phụ cấp hệ số khác
+  const otherCoeff = base * getValue("otherCoeff");
+
+  // Phụ cấp vượt khung
+  const overCoeff = base * getValue("overCoeff");
+  const overYears = Math.floor(getValue("overYears"));
+
+  let overPercent = 0;
+
+  if (overYears >= 3) {
+    overPercent = 5 + (overYears - 3);
+  }
+
+  const overAllowance = overCoeff * overPercent / 100;
+
+  // Các phụ cấp phần trăm
+  const publicAllowance =
+    gradeSalary * getValue("publicPercent") / 100;
+
+  const specialAllowance =
+    gradeSalary * getValue("specialPercent") / 100;
+
+  const unitAllowance =
+    gradeSalary * getValue("unitPercent") / 100;
+
+  const otherPercentAllowance =
+    gradeSalary * getValue("otherPercent") / 100;
+
+  // Tổng thu nhập
+  const totalIncome =
+    gradeSalary +
+    seniority +
+    position +
+    otherCoeff +
+    overAllowance +
+    publicAllowance +
+    specialAllowance +
+    unitAllowance +
+    otherPercentAllowance;
+
+  // BHXH
+  const insuranceBase =
+    gradeSalary +
+    seniority +
+    position +
+    otherCoeff +
+    overAllowance;
+
+  const insurance =
+    insuranceBase * getValue("insurancePercent") / 100;
+
+  // Tiền ăn
+  const breakfast =
+    getValue("breakfastCount") *
+    getValue("breakfastPrice");
+
+  const lunch =
+    getValue("lunchCount") *
+    getValue("lunchPrice");
+
+  const dinner =
+    getValue("dinnerCount") *
+    getValue("dinnerPrice");
+
+  const mealDeduction = breakfast + lunch + dinner;
+
+  // Khấu trừ khác
+  const otherDeduction = getValue("otherDeduction");
+
+  // Thực lĩnh
+  const netSalary =
+    totalIncome -
+    insurance -
+    mealDeduction -
+    otherDeduction;
+
+  // Hiển thị kết quả
+  document.getElementById("netSalary").textContent =
+    money(netSalary);
+
+  document.getElementById("summary").textContent =
+    "Hệ số: " + coefficient +
+    " | Thâm niên: " + years + " năm" +
+    " | Lương cơ sở: " + money(base);
+
+  // Bảng kê
+  const rows = [
+
+    ["Mức lương cơ sở", money(base)],
+
+    ["Lương theo ngạch bậc", money(gradeSalary)],
+
+    ["Phụ cấp thâm niên nghề (" + seniorityPercent + "%)",
+      "+ " + money(seniority)],
+
+    ["Phụ cấp chức vụ", "+ " + money(position)],
+
+    ["Phụ cấp hệ số khác", "+ " + money(otherCoeff)],
+
+    ["Phụ cấp vượt khung (" + overPercent + "%)",
+      "+ " + money(overAllowance)],
+
+    ["Phụ cấp công vụ", "+ " + money(publicAllowance)],
+
+    ["Phụ cấp đặc thù ngành", "+ " + money(specialAllowance)],
+
+    ["Phụ cấp đơn vị", "+ " + money(unitAllowance)],
+
+    ["Phụ cấp phần trăm khác", "+ " + money(otherPercentAllowance)],
+
+    ["TỔNG THU NHẬP", money(totalIncome), "total-row"],
+
+    ["Căn cứ tính BHXH", money(insuranceBase)],
+
+    ["Trích đóng BHXH (" + getValue("insurancePercent") + "%)",
+      "- " + money(insurance), "negative"],
+
+    ["Khấu trừ tiền ăn sáng", "- " + money(breakfast), "negative"],
+
+    ["Khấu trừ tiền ăn trưa", "- " + money(lunch), "negative"],
+
+    ["Khấu trừ tiền ăn tối", "- " + money(dinner), "negative"],
+
+    ["Khấu trừ khác", "- " + money(otherDeduction), "negative"],
+
+    ["SỐ TIỀN THỰC LĨNH", money(netSalary), "final-row"]
+
+  ];
+
+  let html = "";
+
+  rows.forEach(function(row) {
+
+    html +=
+      '<tr class="' + (row[2] || "") + '">' +
+      '<td>' + row[0] + '</td>' +
+      '<td>' + row[1] + '</td>' +
+      '</tr>';
+  });
+
+  document.getElementById("detailBody").innerHTML = html;
+}
+
+
+/************************************************************
+ * NHẬP LẠI
+ ************************************************************/
+
+function resetForm() {
+
+  if (!confirm("Bạn có muốn khôi phục thông số mặc định?")) {
+    return;
+  }
+
+  document.getElementById("baseSalary").value = 2530000;
+  document.getElementById("rank").value = "5.40";
+  document.getElementById("salaryCoefficient").value = 5.4;
+  document.getElementById("seniorityYears").value = 12;
+
+  document.getElementById("positionCoeff").value = 0.3;
+  document.getElementById("otherCoeff").value = 0;
+  document.getElementById("overCoeff").value = 0;
+  document.getElementById("overYears").value = 0;
+
+  document.getElementById("publicPercent").value = 25;
+  document.getElementById("specialPercent").value = 20;
+  document.getElementById("unitPercent").value = 20;
+  document.getElementById("otherPercent").value = 0;
+
+  document.getElementById("insurancePercent").value = 8;
+  document.getElementById("otherDeduction").value = 0;
+
+  document.getElementById("breakfastCount").value = 0;
+  document.getElementById("lunchCount").value = 0;
+  document.getElementById("dinnerCount").value = 0;
+
+  document.getElementById("breakfastPrice").value = 14400;
+  document.getElementById("lunchPrice").value = 28800;
+  document.getElementById("dinnerPrice").value = 28800;
+
+  calculateSalary();
+}
+
+
+/************************************************************
+ * TỰ ĐỘNG TÍNH KHI THAY ĐỔI DỮ LIỆU
+ ************************************************************/
+
+document.querySelectorAll("input, select").forEach(function(element) {
+
+  element.addEventListener("input", calculateSalary);
+
+  element.addEventListener("change", calculateSalary);
+});
+
+
+/************************************************************
+ * KHỞI TẠO
+ ************************************************************/
+
+calculateSalary();
+
+</script>
+
+</body>
+</html>

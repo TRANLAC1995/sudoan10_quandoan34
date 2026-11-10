@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phổ biến GDPL</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;padding:20px;background:#f0f8ff;}
+header{
+  background: rgba(255,255,255,0.8);
+  padding:20px;
+  text-align:center;
+  border-radius:0 0 20px 20px;
+  backdrop-filter: blur(5px);
+}
+header h1{color:#007BFF;font-size:1.8rem;margin-bottom:10px;}
+header button{
+  margin:3px;padding:8px 12px;border:none;border-radius:8px;cursor:pointer;background:#1e3c72;color:#fff;
+}
+section{max-width:900px;margin:30px auto;}
+.grid-lessons{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-top:20px;
+}
+.square-lesson{
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(8px);
+  border-radius:15px;
+  text-align:center;
+  padding:40px 10px;
+  cursor:pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.square-lesson:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.square-lesson a{
+  text-decoration:none;
+  color:inherit;
+  display:block;
+}
+.square-lesson .icon{
+  font-size:2.5rem;
+  margin-bottom:10px;
+}
+.square-lesson p{font-weight:bold;}
+.editable[contenteditable="true"]{
+  outline:2px dashed red;
+  background:#fff8c6;
+}
+button.main-btn{
+  background:#1e3c72;color:#fff;border:none;padding:10px 18px;border-radius:12px;cursor:pointer;font-size:0.95rem;margin-top:20px;
+}
+button.main-btn:hover{background:#2a5298;transform:translateY(-2px);}
+@media(max-width:800px){.grid-lessons{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.grid-lessons{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="editable" data-key="title-main">Phổ biến GDPL</h1>
+  <button onclick="adminLogin()">🔐 Quản trị</button>
+  <button id="editBtn" onclick="toggleEdit()" style="display:none">✏️ Chỉnh sửa</button>
+  <button id="saveBtn" onclick="saveContent()" style="display:none">💾 Lưu</button>
+  <button id="logoutBtn" onclick="logoutAdmin()" style="display:none">🚪 Thoát</button>
+</header>
+
+<section>
+
+<div class="grid-lessons">
+  <div class="square-lesson">
+    <a href="hien-phap.html">
+      <div class="icon">📜</div>
+      <p class="editable" data-key="part1-title">Hiến pháp & Pháp luật cơ bản</p>
+    </a>
+  </div>
+  <div class="square-lesson">
+    <a href="luat-quan-doi.html">
+      <div class="icon">⚖️</div>
+      <p class="editable" data-key="part2-title">Luật Quân đội</p>
+    </a>
+  </div>
+  <div class="square-lesson">
+    <a href="quy-dinh-ky-luat.html">
+      <div class="icon">📋</div>
+      <p class="editable" data-key="part3-title">Quy định kỷ luật</p>
+    </a>
+  </div>
+  <div class="square-lesson">
+    <a href="quyen-nghia-vu.html">
+      <div class="icon">🧑‍✈️</div>
+      <p class="editable" data-key="part4-title">Quyền & nghĩa vụ quân nhân</p>
+    </a>
+  </div>
+</div>
+
+<a href="index.html"><button class="main-btn">⬅ Quay lại</button></a>
+</section>
+
+<script>
+const ADMIN_PASSWORD = "303";
+let isAdmin = false;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxS8FFDX1F_46ezOcIftV44wj-3SXTEanQmfD9esH_rUtUH3S6IGQkgVxuNjS_jEpmAyQ/exec";
+
+// Quản trị
+function adminLogin(){
+  const pass = prompt("Nhập mật khẩu quản trị:");
+  if(pass === ADMIN_PASSWORD){
+    isAdmin = true;
+    document.getElementById("editBtn").style.display=
+    document.getElementById("saveBtn").style.display=
+    document.getElementById("logoutBtn").style.display="inline-block";
+    alert("✅ Chế độ quản trị bật");
+  }
+}
+
+function toggleEdit(){
+  if(!isAdmin) return;
+  document.querySelectorAll(".editable").forEach(el=>{
+    el.contentEditable = el.contentEditable!=="true";
+  });
+}
+
+async function saveContent(){
+  if(!isAdmin) return;
+  const data={};
+  document.querySelectorAll(".editable").forEach(el=>data[el.dataset.key]=el.innerHTML);
+  try{
+    const res = await fetch(SCRIPT_URL,{
+      method:"POST",
+      body:JSON.stringify(data)
+    });
+    const result = await res.json();
+    alert("💾 Đã lưu nội dung lên Google Sheet: "+result.status);
+  }catch(err){
+    alert("❌ Lỗi lưu: "+err.message);
+  }
+}
+
+function logoutAdmin(){
+  isAdmin = false;
+  document.querySelectorAll(".editable").forEach(el=>el.contentEditable=false);
+  document.getElementById("editBtn").style.display=
+  document.getElementById("saveBtn").style.display=
+  document.getElementById("logoutBtn").style.display="none";
+}
+
+window.onload = async ()=>{
+  // Load dữ liệu từ Google Sheet
+  try{
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    document.querySelectorAll(".editable").forEach(el=>{
+      if(data[el.dataset.key]) el.innerHTML = data[el.dataset.key];
+    });
+  }catch(err){console.error("❌ Lỗi tải dữ liệu:",err);}
+};
+</script>
+
+</body>
+</html>

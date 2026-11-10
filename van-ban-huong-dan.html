@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Văn bản hướng dẫn</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Arial,sans-serif;padding:20px;background:#f0f8ff;}
+header{
+  background:rgba(255,255,255,.85);
+  padding:20px;text-align:center;
+  border-radius:0 0 20px 20px;
+}
+header h1{color:#007BFF;}
+
+section{max-width:900px;margin:30px auto;}
+
+.grid-lessons{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;margin-bottom:20px;
+}
+.square-lesson{
+  background:rgba(255,255,255,.65);
+  border-radius:15px;
+  text-align:center;
+  padding:30px 10px;
+  cursor:pointer;
+  transition:.3s;
+}
+.square-lesson:hover{
+  transform:translateY(-5px);
+  box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+.icon{font-size:2.5rem;}
+.square-lesson p{font-weight:bold;}
+
+#lesson-content{
+  background:rgba(255,255,255,.75);
+  padding:20px;border-radius:12px;
+  min-height:120px;
+  box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+button{
+  background:#1e3c72;color:#fff;
+  border:none;border-radius:8px;
+  padding:6px 10px;cursor:pointer;
+  margin:3px 0;font-size:.85rem;
+}
+button:hover{background:#2a5298}
+
+.admin-panel{
+  margin-top:15px;padding:15px;
+  background:#fffbe6;
+  border-radius:12px;
+  border-left:6px solid #ff9800;
+}
+
+input,textarea{
+  width:100%;padding:8px;margin:5px 0;
+  border-radius:8px;border:1px solid #ccc;
+}
+
+.item{
+  padding:10px;border-bottom:1px dashed #ccc;
+}
+.item-title{font-weight:bold;}
+.actions button{margin-right:5px;}
+.attach{font-size:.85rem;margin-top:5px;}
+.attach a{color:#0b3d91;text-decoration:none;}
+.attach a:hover{text-decoration:underline;}
+
+@media(max-width:800px){
+  .grid-lessons{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Văn bản hướng dẫn</h1>
+<button onclick="adminLogin()">🔐 Quản trị</button>
+</header>
+
+<section>
+<a href="index.html"><button>⏪ Quay lại</button></a>
+
+<div class="grid-lessons">
+  <div class="square-lesson" onclick="showTexts()">
+    <div class="icon">📄</div>
+    <p>Văn bản hướng dẫn</p>
+  </div>
+  <div class="square-lesson" onclick="showLinks()">
+    <div class="icon">🔗</div>
+    <p>Đường link tham khảo</p>
+  </div>
+</div>
+
+<div id="lesson-content">
+<p>Chọn một ô để xem nội dung…</p>
+</div>
+</section>
+
+<script>
+const ADMIN_PASS="123"; // đổi mật khẩu
+let isAdmin=false;
+
+let texts=JSON.parse(localStorage.getItem("texts"))||[
+ {title:"Quy chế 775",content:"Văn bản hướng dẫn công tác nội bộ trong đơn vị.",attach:""}
+];
+
+let links=JSON.parse(localStorage.getItem("links"))||[
+ {name:"Thư viện Pháp luật",url:"https://thuvienphapluat.vn"}
+];
+
+function saveData(){
+ localStorage.setItem("texts",JSON.stringify(texts));
+ localStorage.setItem("links",JSON.stringify(links));
+}
+
+function adminLogin(){
+ const p=prompt("Nhập mật khẩu quản trị:");
+ if(p===ADMIN_PASS){
+   isAdmin=true;
+   alert("Đã vào chế độ quản trị");
+ }
+}
+
+/* ===== VĂN BẢN ===== */
+function showTexts(){
+ let html="<h3>📄 Danh sách văn bản</h3>";
+ texts.forEach((t,i)=>{
+   html+=`
+   <div class="item">
+     <div class="item-title">${t.title}</div>
+     <div>${t.content}</div>
+     ${t.attach?`<div class="attach">📎 <a href="${t.attach}" target="_blank">Xem đính kèm</a></div>`:""}
+     ${isAdmin?`
+     <div class="actions">
+       <button onclick="editText(${i})">✏️ Sửa</button>
+       <button onclick="deleteText(${i})">🗑️ Xoá</button>
+     </div>`:""}
+   </div>`;
+ });
+
+ if(isAdmin){
+   html+=`
+   <div class="admin-panel">
+   <h4>➕ Thêm văn bản mới</h4>
+   <input id="tTitle" placeholder="Tên văn bản">
+   <textarea id="tContent" placeholder="Nội dung"></textarea>
+   <input id="tAttach" placeholder="Link đính kèm (PDF / ảnh / Drive)">
+   <button onclick="addText()">Lưu</button>
+   </div>`;
+ }
+ document.getElementById("lesson-content").innerHTML=html;
+}
+
+function addText(){
+ texts.push({
+   title:tTitle.value,
+   content:tContent.value,
+   attach:tAttach.value
+ });
+ saveData(); showTexts();
+}
+
+function editText(i){
+ const t=texts[i];
+ document.getElementById("lesson-content").innerHTML=`
+ <h3>✏️ Sửa văn bản</h3>
+ <input id="eTitle" value="${t.title}">
+ <textarea id="eContent">${t.content}</textarea>
+ <input id="eAttach" value="${t.attach||""}">
+ <button onclick="saveEdit(${i})">💾 Lưu</button>
+ <button onclick="showTexts()">❌ Huỷ</button>`;
+}
+
+function saveEdit(i){
+ texts[i]={
+   title:eTitle.value,
+   content:eContent.value,
+   attach:eAttach.value
+ };
+ saveData(); showTexts();
+}
+
+function deleteText(i){
+ if(confirm("Xác nhận xoá văn bản này?")){
+   texts.splice(i,1);
+   saveData(); showTexts();
+ }
+}
+
+/* ===== LINK ===== */
+function showLinks(){
+ let html="<h3>🔗 Link tham khảo</h3>";
+ links.forEach((l,i)=>{
+   html+=`
+   <div class="item">
+     <a href="${l.url}" target="_blank">${l.name}</a>
+     ${isAdmin?` <button onclick="deleteLink(${i})">🗑️</button>`:""}
+   </div>`;
+ });
+
+ if(isAdmin){
+   html+=`
+   <div class="admin-panel">
+   <h4>➕ Thêm link</h4>
+   <input id="lName" placeholder="Tên link">
+   <input id="lUrl" placeholder="URL">
+   <button onclick="addLink()">Lưu</button>
+   </div>`;
+ }
+ document.getElementById("lesson-content").innerHTML=html;
+}
+
+function addLink(){
+ links.push({name:lName.value,url:lUrl.value});
+ saveData(); showLinks();
+}
+
+function deleteLink(i){
+ if(confirm("Xoá link này?")){
+   links.splice(i,1);
+   saveData(); showLinks();
+ }
+}
+</script>
+
+</body>
+</html>

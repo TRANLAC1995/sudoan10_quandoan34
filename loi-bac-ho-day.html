@@ -1,0 +1,1076 @@
+﻿
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lời Bác Hồ dạy ngày này năm xưa</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  color: #263238;
+  min-height: 100vh;
+  background: #eaf0f5;
+}
+
+/* Hình nền */
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(235, 242, 248, 0.72);
+  z-index: -1;
+}
+
+/* Header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 15px 20px;
+  text-align: center;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+
+header h1 {
+  color: #07569b;
+  font-size: 23px;
+  line-height: 1.4;
+}
+
+/* Nội dung chính */
+section {
+  max-width: 1000px;
+  margin: 100px auto 30px;
+}
+
+/* Nút quay lại */
+.back {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #07569b;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 18px;
+}
+
+.back:hover {
+  background: #034276;
+}
+
+/* Card chính */
+.main-card {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.12);
+  margin-bottom: 20px;
+}
+
+.main-title {
+  text-align: center;
+  color: #07569b;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* Tiêu đề từng phần */
+.section-title {
+  color: #07569b;
+  font-size: 21px;
+  margin-bottom: 18px;
+  border-left: 5px solid #07569b;
+  padding-left: 12px;
+}
+
+/* Lưới 12 tháng */
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.month-item {
+  min-height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 15px 8px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(7,86,155,0.18);
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.month-item:hover {
+  transform: translateY(-5px);
+  background: #e5f2ff;
+  box-shadow: 0 5px 14px rgba(0,0,0,0.12);
+}
+
+.month-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.month-name {
+  color: #07569b;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+/* Khu vực ngày */
+#daySection,
+#articleSection {
+  display: none;
+}
+
+.month-heading {
+  color: #07569b;
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Lịch */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.weekday {
+  text-align: center;
+  padding: 10px 2px;
+  font-weight: bold;
+  color: #07569b;
+  background: #e6f1fb;
+  border-radius: 7px;
+}
+
+.day-item {
+  min-height: 65px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid #d5e0e9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  color: #999;
+}
+
+.day-item.has-data {
+  cursor: pointer;
+  color: #07569b;
+  border: 1px solid #7eb5e3;
+  background: #f0f8ff;
+  font-weight: bold;
+}
+
+.day-item.has-data:hover {
+  background: #07569b;
+  color: white;
+  transform: scale(1.04);
+}
+
+.day-number {
+  font-size: 19px;
+}
+
+.day-status {
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.day-item.selected {
+  background: #07569b;
+  color: white;
+}
+
+/* Bài viết */
+.article-box {
+  background: rgba(255,255,255,0.95);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid #dce5ed;
+}
+
+.article-title {
+  text-align: center;
+  color: #07569b;
+  font-size: 24px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.article-content {
+  font-size: 16px;
+  line-height: 1.85;
+  color: #333;
+  overflow-wrap: anywhere;
+}
+
+.article-content p {
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 15px auto;
+  border-radius: 8px;
+}
+
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+  color: #07569b;
+  margin: 18px 0 10px;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 25px;
+  margin-bottom: 15px;
+}
+
+.article-content blockquote {
+  border-left: 4px solid #07569b;
+  padding: 12px 18px;
+  margin: 15px 0;
+  background: #eef6fd;
+  font-style: italic;
+}
+
+.source-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #07569b;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.source-link:hover {
+  text-decoration: underline;
+}
+
+/* Nút điều hướng */
+.nav-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #07569b;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.nav-button:hover {
+  background: #034276;
+}
+
+/* Trạng thái tải dữ liệu */
+.loading {
+  text-align: center;
+  padding: 25px;
+  color: #07569b;
+  font-size: 16px;
+}
+
+.error {
+  text-align: center;
+  padding: 20px;
+  color: #b3261e;
+  background: #fff0ef;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+
+.empty {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Thông tin nguồn */
+.source-note {
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  body {
+    padding: 12px;
+  }
+
+  header {
+    padding: 12px 8px;
+  }
+
+  header h1 {
+    font-size: 17px;
+  }
+
+  section {
+    margin-top: 85px;
+  }
+
+  .main-card {
+    padding: 16px;
+  }
+
+  .main-title {
+    font-size: 21px;
+  }
+
+  .month-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .month-item {
+    min-height: 90px;
+  }
+
+  .month-name {
+    font-size: 14px;
+  }
+
+  .calendar {
+    gap: 4px;
+  }
+
+  .day-item {
+    min-height: 48px;
+  }
+
+  .day-number {
+    font-size: 16px;
+  }
+
+  .day-status {
+    font-size: 8px;
+  }
+
+  .weekday {
+    font-size: 12px;
+    padding: 8px 1px;
+  }
+
+  .article-box {
+    padding: 15px;
+  }
+
+  .article-title {
+    font-size: 20px;
+  }
+
+  .article-content {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 380px) {
+  .month-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<img id="background" src="background.jpg" alt="Hình nền">
+
+<header>
+  <h1>LỜI BÁC HỒ DẠY NGÀY NÀY NĂM XƯA</h1>
+</header>
+
+<section>
+
+  <a href="index.html">
+    <button class="back">⏪ Quay lại</button>
+  </a>
+
+  <!-- TRANG CHỌN THÁNG -->
+  <div id="monthSection" class="main-card">
+
+    <h2 class="main-title">
+      LỜI BÁC HỒ DẠY NGÀY NÀY NĂM XƯA
+    </h2>
+
+    <p class="subtitle">
+      Tra cứu lời dạy của Chủ tịch Hồ Chí Minh theo từng ngày trong năm.
+      <br>
+      Lựa chọn tháng để xem nội dung.
+    </p>
+
+    <h3 class="section-title">📅 Chọn tháng tra cứu</h3>
+
+    <div class="month-grid" id="monthGrid"></div>
+
+    <p class="source-note">
+      Dữ liệu được lấy trực tuyến từ website loibacday.com
+    </p>
+
+  </div>
+
+  <!-- TRANG CHỌN NGÀY -->
+  <div id="daySection" class="main-card">
+
+    <button class="nav-button" onclick="showMonths()">
+      ⬅ Quay lại chọn tháng
+    </button>
+
+    <h2 class="month-heading" id="monthHeading"></h2>
+
+    <p class="subtitle">
+      Chọn ngày có nội dung để xem lời Bác Hồ dạy.
+    </p>
+
+    <div id="dayLoading" class="loading" style="display:none">
+      Đang tải dữ liệu...
+    </div>
+
+    <div id="dayError"></div>
+
+    <div class="calendar" id="calendar"></div>
+
+    <p class="source-note">
+      Ngày có dữ liệu được đánh dấu màu xanh.
+    </p>
+
+  </div>
+
+  <!-- TRANG HIỂN THỊ BÀI VIẾT -->
+  <div id="articleSection" class="main-card">
+
+    <button class="nav-button" onclick="showDays()">
+      ⬅ Quay lại danh sách ngày
+    </button>
+
+    <div id="articleLoading" class="loading" style="display:none">
+      Đang tải nội dung bài viết...
+    </div>
+
+    <div id="articleError"></div>
+
+    <div class="article-box" id="articleBox" style="display:none">
+
+      <h2 class="article-title" id="articleTitle"></h2>
+
+      <div class="article-content" id="articleContent"></div>
+
+      <a class="source-link" id="sourceLink"
+         href="#" target="_blank" rel="noopener">
+        🔗 Xem bài viết gốc
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+
+/* =====================================================
+   CẤU HÌNH KẾT NỐI GOOGLE APPS SCRIPT
+===================================================== */
+
+const API_URL = "https://script.google.com/macros/s/AKfycbxfc12l8ZQw7oiEB6gvzg0xFaxWujR0l5R-VdzK5ggg60b2j8Qof1W-2SBeBRE-nL8X/exec";
+
+
+/* =====================================================
+   DỮ LIỆU GIAO DIỆN
+===================================================== */
+
+const monthNames = [
+  "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4",
+  "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8",
+  "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+];
+
+const monthIcons = [
+  "🌸", "🌼", "🌿", "🌺",
+  "🌞", "🌻", "🌾", "🍀",
+  "🍂", "🌤️", "🌷", "🎄"
+];
+
+let currentMonth = 0;
+let currentDay = 0;
+let currentArticle = null;
+
+let monthArticles = {};
+let selectedArticle = null;
+
+
+/* =====================================================
+   TẠO 12 Ô THÁNG
+===================================================== */
+
+function createMonths() {
+
+  const grid = document.getElementById("monthGrid");
+  grid.innerHTML = "";
+
+  monthNames.forEach((name, index) => {
+
+    const item = document.createElement("div");
+    item.className = "month-item";
+
+    item.innerHTML = `
+      <div class="month-icon">${monthIcons[index]}</div>
+      <div class="month-name">${name}</div>
+    `;
+
+    item.onclick = () => loadMonth(index + 1);
+
+    grid.appendChild(item);
+
+  });
+
+}
+
+
+/* =====================================================
+   HÀM GỌI API JSONP
+===================================================== */
+
+function callAPI(params) {
+
+  return new Promise((resolve, reject) => {
+
+    if (!API_URL || API_URL.includes("DAN_URL_APPS_SCRIPT")) {
+      reject(new Error("Bạn chưa nhập URL Google Apps Script."));
+      return;
+    }
+
+    const callbackName =
+      "jsonpCallback_" + Date.now() + "_" +
+      Math.floor(Math.random() * 100000);
+
+    const script = document.createElement("script");
+
+    const query = new URLSearchParams({
+      ...params,
+      callback: callbackName
+    });
+
+    const timeout = setTimeout(() => {
+
+      cleanup();
+
+      reject(new Error(
+        "Không nhận được phản hồi từ máy chủ. Vui lòng thử lại."
+      ));
+
+    }, 30000);
+
+    function cleanup() {
+      clearTimeout(timeout);
+      delete window[callbackName];
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    }
+
+    window[callbackName] = function(data) {
+
+      cleanup();
+      resolve(data);
+
+    };
+
+    script.onerror = function() {
+
+      cleanup();
+
+      reject(new Error(
+        "Không thể kết nối dữ liệu. Kiểm tra lại URL Apps Script."
+      ));
+
+    };
+
+    script.src = API_URL + "?" + query.toString();
+
+    document.body.appendChild(script);
+
+  });
+
+}
+
+
+/* =====================================================
+   CHUYỂN GIAO DIỆN
+===================================================== */
+
+function showMonths() {
+
+  document.getElementById("monthSection").style.display = "block";
+  document.getElementById("daySection").style.display = "none";
+  document.getElementById("articleSection").style.display = "none";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+}
+
+function showDays() {
+
+  document.getElementById("monthSection").style.display = "none";
+  document.getElementById("daySection").style.display = "block";
+  document.getElementById("articleSection").style.display = "none";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+}
+
+function showArticlePage() {
+
+  document.getElementById("monthSection").style.display = "none";
+  document.getElementById("daySection").style.display = "none";
+  document.getElementById("articleSection").style.display = "block";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+}
+
+
+/* =====================================================
+   TẢI DỮ LIỆU THEO THÁNG
+===================================================== */
+
+async function loadMonth(month) {
+
+  currentMonth = month;
+  currentDay = 0;
+
+  document.getElementById("monthSection").style.display = "none";
+  document.getElementById("daySection").style.display = "block";
+  document.getElementById("articleSection").style.display = "none";
+
+  document.getElementById("monthHeading").textContent =
+    "LỜI BÁC HỒ DẠY - THÁNG " + month;
+
+  document.getElementById("calendar").innerHTML = "";
+
+  document.getElementById("dayError").innerHTML = "";
+
+  document.getElementById("dayLoading").style.display = "block";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  try {
+
+    let data;
+
+    if (monthArticles[month]) {
+
+      data = monthArticles[month];
+
+    } else {
+
+      data = await callAPI({ month: month });
+
+      if (!data || data.error) {
+        throw new Error(data?.error || "Dữ liệu tháng không hợp lệ.");
+      }
+
+      monthArticles[month] = data;
+
+    }
+
+    renderCalendar(month, data.articles || []);
+
+  } catch (error) {
+
+    document.getElementById("dayError").innerHTML = `
+      <div class="error">
+        ⚠️ ${escapeHTML(error.message)}
+        <br><br>
+        Vui lòng kiểm tra kết nối hoặc thử tải lại trang.
+      </div>
+    `;
+
+  } finally {
+
+    document.getElementById("dayLoading").style.display = "none";
+
+  }
+
+}
+
+
+/* =====================================================
+   HIỂN THỊ LỊCH VÀ CÁC NGÀY CÓ DỮ LIỆU
+===================================================== */
+
+function renderCalendar(month, articles) {
+
+  const calendar = document.getElementById("calendar");
+
+  calendar.innerHTML = "";
+
+  const weekdays = [
+    "T2", "T3", "T4", "T5", "T6", "T7", "CN"
+  ];
+
+  weekdays.forEach(day => {
+
+    const el = document.createElement("div");
+    el.className = "weekday";
+    el.textContent = day;
+
+    calendar.appendChild(el);
+
+  });
+
+  const year = new Date().getFullYear();
+
+  const totalDays = new Date(year, month, 0).getDate();
+
+  // Thứ của ngày đầu tháng, quy đổi thứ Hai = 0
+  const firstDay = (new Date(year, month - 1, 1).getDay() + 6) % 7;
+
+  for (let i = 0; i < firstDay; i++) {
+
+    const blank = document.createElement("div");
+    calendar.appendChild(blank);
+
+  }
+
+  const articleMap = {};
+
+  articles.forEach(article => {
+
+    const day = Number(article.day);
+
+    if (day >= 1 && day <= totalDays) {
+      articleMap[day] = article;
+    }
+
+  });
+
+  for (let day = 1; day <= totalDays; day++) {
+
+    const item = document.createElement("div");
+
+    const article = articleMap[day];
+
+    item.className = "day-item";
+
+    if (article) {
+
+      item.classList.add("has-data");
+
+      item.innerHTML = `
+        <span class="day-number">${day}</span>
+        <span class="day-status">Có bài viết</span>
+      `;
+
+      item.onclick = () => loadArticle(day, article, item);
+
+      item.title = article.title || ("Ngày " + day);
+
+    } else {
+
+      item.innerHTML = `
+        <span class="day-number">${day}</span>
+        <span class="day-status">Chưa có dữ liệu</span>
+      `;
+
+    }
+
+    calendar.appendChild(item);
+
+  }
+
+}
+
+
+/* =====================================================
+   TẢI BÀI VIẾT THEO NGÀY
+===================================================== */
+
+async function loadArticle(day, article, element) {
+
+  currentDay = day;
+  currentArticle = article;
+  selectedArticle = article;
+
+  showArticlePage();
+
+  document.getElementById("articleBox").style.display = "none";
+  document.getElementById("articleError").innerHTML = "";
+
+  document.getElementById("articleLoading").style.display = "block";
+
+  try {
+
+    const data = await callAPI({
+      article: article.url
+    });
+
+    if (!data || data.error) {
+      throw new Error(data?.error || "Không tải được bài viết.");
+    }
+
+    const html = data.html || data.content || "";
+
+    if (!html) {
+      throw new Error("Website nguồn không trả về nội dung bài viết.");
+    }
+
+    renderArticle(html, article);
+
+  } catch (error) {
+
+    document.getElementById("articleError").innerHTML = `
+      <div class="error">
+        ⚠️ ${escapeHTML(error.message)}
+        <br><br>
+        Bạn có thể xem trực tiếp bài viết tại website nguồn.
+        <br><br>
+        <a href="${safeURL(article.url)}" target="_blank" rel="noopener">
+          Mở bài viết gốc
+        </a>
+      </div>
+    `;
+
+  } finally {
+
+    document.getElementById("articleLoading").style.display = "none";
+
+  }
+
+}
+
+
+/* =====================================================
+   LỌC VÀ HIỂN THỊ NỘI DUNG BÀI VIẾT
+===================================================== */
+
+function renderArticle(html, article) {
+
+  const parser = new DOMParser();
+
+  const doc = parser.parseFromString(html, "text/html");
+
+  // Tìm vùng nội dung bài viết
+  const selectors = [
+    ".bodytext",
+    "#news_detail",
+    ".news-detail",
+    ".article-content",
+    ".entry-content",
+    "article"
+  ];
+
+  let contentElement = null;
+
+  for (const selector of selectors) {
+
+    const found = doc.querySelector(selector);
+
+    if (found && found.innerText.trim().length > 50) {
+
+      contentElement = found;
+      break;
+
+    }
+
+  }
+
+  // Nếu HTML là toàn bộ trang web, lấy nội dung chính
+  if (!contentElement) {
+    contentElement = doc.body;
+  }
+
+  // Xóa các thành phần không cần thiết
+  contentElement.querySelectorAll(
+    "script, style, iframe, form, nav, footer, header, button, .social, .share, .breadcrumb, .related, .comment"
+  ).forEach(el => el.remove());
+
+  // Loại bỏ các đường dẫn nguy hiểm
+  contentElement.querySelectorAll("*").forEach(el => {
+
+    [...el.attributes].forEach(attr => {
+
+      if (/^on/i.test(attr.name)) {
+        el.removeAttribute(attr.name);
+      }
+
+    });
+
+    if (el.tagName === "A") {
+
+      const href = el.getAttribute("href");
+
+      if (href) {
+
+        try {
+
+          const url = new URL(href, article.url);
+
+          if (!["http:", "https:"].includes(url.protocol)) {
+            el.removeAttribute("href");
+          } else {
+            el.setAttribute("href", url.href);
+            el.setAttribute("target", "_blank");
+            el.setAttribute("rel", "noopener");
+          }
+
+        } catch (e) {
+
+          el.removeAttribute("href");
+
+        }
+
+      }
+
+    }
+
+    if (el.tagName === "IMG") {
+
+      const src = el.getAttribute("src");
+
+      if (src) {
+
+        try {
+
+          el.setAttribute("src", new URL(src, article.url).href);
+
+        } catch (e) {
+
+          el.remove();
+
+        }
+
+      }
+
+    }
+
+  });
+
+  // Lấy tiêu đề
+  const heading = doc.querySelector("h1") ||
+                  contentElement.querySelector("h2");
+
+  const title = heading
+    ? heading.innerText.trim()
+    : (article.title || `Lời Bác Hồ dạy ngày ${currentDay} tháng ${currentMonth}`);
+
+  // Bỏ tiêu đề trùng lặp trong nội dung
+  if (heading && contentElement.contains(heading)) {
+    heading.remove();
+  }
+
+  const content = contentElement.innerHTML.trim();
+
+  document.getElementById("articleTitle").textContent = title;
+
+  document.getElementById("articleContent").innerHTML =
+    content || "<p>Không tìm thấy nội dung bài viết.</p>";
+
+  const link = document.getElementById("sourceLink");
+
+  link.href = safeURL(article.url);
+
+  document.getElementById("articleBox").style.display = "block";
+
+}
+
+
+/* =====================================================
+   HÀM BẢO VỆ HIỂN THỊ VĂN BẢN
+===================================================== */
+
+function escapeHTML(value) {
+
+  return String(value ?? "").replace(/[&<>"']/g, char => {
+
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[char];
+
+  });
+
+}
+
+function safeURL(value) {
+
+  try {
+
+    const url = new URL(value);
+
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
+    }
+
+  } catch (e) {}
+
+  return "#";
+
+}
+
+
+/* =====================================================
+   KHỞI TẠO TRANG
+===================================================== */
+
+createMonths();
+
+showMonths();
+
+</script>
+
+</body>
+</html>
