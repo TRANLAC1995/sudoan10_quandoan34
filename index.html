@@ -145,6 +145,34 @@ section{max-width:1000px;margin:120px auto 40px;}
 
 <header>
   <h1>THƯ VIỆN HỌC TẬP ĐIỆN TỬ</h1>
+
+  <div style="margin-top:12px;">
+    <button id="iosInstallBtn" style="
+      display:none;
+      padding:10px 18px;
+      margin:5px;
+      background:#007bff;
+      color:white;
+      border:none;
+      border-radius:25px;
+      font-weight:bold;
+      cursor:pointer;">
+      📲 CÀI ĐẶT TRÊN IPHONE
+    </button>
+
+    <button id="androidInstallBtn" style="
+      display:none;
+      padding:10px 18px;
+      margin:5px;
+      background:#168447;
+      color:white;
+      border:none;
+      border-radius:25px;
+      font-weight:bold;
+      cursor:pointer;">
+      📲 CÀI ĐẶT TRÊN ANDROID
+    </button>
+  </div>
 </header>
 
 <section>
@@ -242,8 +270,6 @@ section{max-width:1000px;margin:120px auto 40px;}
     </div>
 
 
-</section>
-
 
 </section>
 
@@ -282,7 +308,85 @@ function toggleMusic() {
     musicButton.innerHTML = "▶️ Bật nhạc";
   }
 }
+
+// ===== CÀI ĐẶT ỨNG DỤNG IOS VÀ ANDROID =====
+
+const iosBtn = document.getElementById("iosInstallBtn");
+const androidBtn = document.getElementById("androidInstallBtn");
+
+const ua = navigator.userAgent;
+const isIOS = /iPhone|iPad|iPod/i.test(ua);
+const isAndroid = /Android/i.test(ua);
+
+// Kiểm tra ứng dụng đã cài
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
+
+let deferredPrompt = null;
+
+if (!isStandalone) {
+
+  // HIỆN NÚT IOS
+  if (isIOS) {
+    iosBtn.style.display = "inline-block";
+
+    iosBtn.addEventListener("click", function() {
+      alert(
+        "CÀI ĐẶT ỨNG DỤNG TRÊN IPHONE:\n\n" +
+        "1. Mở trang web bằng trình duyệt Safari.\n" +
+        "2. Nhấn nút Chia sẻ ở phía dưới màn hình.\n" +
+        "3. Chọn Thêm vào màn hình chính.\n" +
+        "4. Nhấn Thêm để hoàn tất."
+      );
+    });
+  }
+
+  // HIỆN NÚT ANDROID
+  if (isAndroid) {
+    androidBtn.style.display = "inline-block";
+  }
+}
+
+// Nhận yêu cầu cài đặt từ Chrome Android
+window.addEventListener("beforeinstallprompt", function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+if (androidBtn) {
+  androidBtn.addEventListener("click", async function() {
+
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+
+      const choice = await deferredPrompt.userChoice;
+
+      if (choice.outcome === "accepted") {
+        androidBtn.style.display = "none";
+      }
+
+      deferredPrompt = null;
+
+    } else {
+      alert(
+        "CÀI ĐẶT ỨNG DỤNG TRÊN ANDROID:\n\n" +
+        "1. Mở trang web bằng Google Chrome.\n" +
+        "2. Nhấn dấu ba chấm ⋮ ở góc trên bên phải.\n" +
+        "3. Chọn Cài đặt ứng dụng hoặc Thêm vào màn hình chính.\n" +
+        "4. Xác nhận cài đặt."
+      );
+    }
+  });
+}
+
+// Ẩn nút Android khi cài đặt thành công
+window.addEventListener("appinstalled", function() {
+  androidBtn.style.display = "none";
+  deferredPrompt = null;
+});
 </script>
+
 
 </body>
 </html>
