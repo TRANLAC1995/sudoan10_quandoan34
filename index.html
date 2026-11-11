@@ -151,6 +151,19 @@ section{max-width:1000px;margin:145px auto 40px;}
 <header>
   <h1>THƯ VIỆN HỌC TẬP ĐIỆN TỬ</h1>
   <button id="installAppBtn" hidden>📲 Cài đặt ứng dụng</button>
+
+  <button id="androidInstallBtn" hidden style="
+    margin-top:12px;
+    padding:10px 18px;
+    border:0;
+    border-radius:25px;
+    background:#168447;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;">
+    📲 CÀI ĐẶT TRÊN ANDROID
+  </button>
 </header>
 
 <section>
@@ -246,13 +259,23 @@ if ("serviceWorker" in navigator) {
 let deferredPrompt;
 const installBtn = document.getElementById("installAppBtn");
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isAndroid = /Android/i.test(navigator.userAgent);
+const androidBtn = document.getElementById("androidInstallBtn");
 const isStandalone = window.matchMedia("(display-mode: standalone)").matches ||
                      navigator.standalone === true;
+  if (isAndroid && !isStandalone) {
+  androidBtn.hidden = false;
+}
 
 window.addEventListener("beforeinstallprompt", event => {
   event.preventDefault();
   deferredPrompt = event;
-  installBtn.hidden = false;
+
+  if (isAndroid) {
+    androidBtn.hidden = false;
+  } else {
+    installBtn.hidden = false;
+  }
 });
 
 installBtn.addEventListener("click", async () => {
@@ -267,11 +290,27 @@ installBtn.addEventListener("click", async () => {
     alert("Mở menu trình duyệt (⋮) và chọn Cài đặt ứng dụng hoặc Thêm vào màn hình chính.");
   }
 });
+  androidBtn.addEventListener("click", async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+
+    const choice = await deferredPrompt.userChoice;
+
+    if (choice.outcome === "accepted") {
+      androidBtn.hidden = true;
+    }
+
+    deferredPrompt = null;
+  } else {
+    alert("Hãy mở Chrome, nhấn dấu ba chấm ⋮ và chọn Cài đặt ứng dụng hoặc Thêm vào màn hình chính.");
+  }
+});
 
 window.addEventListener("appinstalled", () => {
   installBtn.hidden = true;
+  androidBtn.hidden = true;
+  deferredPrompt = null;
 });
-
 if (isIOS && !isStandalone) {
   installBtn.hidden = false;
 }
