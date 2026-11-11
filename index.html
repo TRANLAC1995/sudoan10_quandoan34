@@ -143,28 +143,9 @@ section{max-width:1000px;margin:120px auto 40px;}
 </button>
 <div id="background"></div>
 
-
 <header>
   <h1>THƯ VIỆN HỌC TẬP ĐIỆN TỬ</h1>
-
-  <!-- NÚT CÀI ĐẶT ANDROID -->
-  <button id="androidInstallBtn" style="
-    display:none;
-    margin:12px auto 0;
-    padding:11px 24px;
-    background:linear-gradient(135deg,#007bff,#004aad);
-    color:white;
-    font-size:15px;
-    font-weight:bold;
-    border:none;
-    border-radius:30px;
-    cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,.2);
-  ">
-    📲 CÀI ĐẶT ỨNG DỤNG
-  </button>
 </header>
-
 
 <section>
 
@@ -258,7 +239,10 @@ section{max-width:1000px;margin:120px auto 40px;}
 
 
     
+    </div>
 
+
+</section>
 
 
 </section>
@@ -298,78 +282,9 @@ function toggleMusic() {
     musicButton.innerHTML = "▶️ Bật nhạc";
   }
 }
-
-</script>
-
-
-
-<script>
-// CÀI ĐẶT ỨNG DỤNG ANDROID
-(function() {
-    const btn = document.getElementById("androidInstallBtn");
-
-    if (!btn) return;
-
-    // Không can thiệp vào iOS
-    if (!/android/i.test(navigator.userAgent)) return;
-
-    // Kiểm tra đang chạy ứng dụng đã cài
-    function isInstalled() {
-        return window.matchMedia(
-            "(display-mode: standalone)"
-        ).matches;
-    }
-
-    if (isInstalled()) {
-        btn.style.display = "none";
-        return;
-    }
-
-    // Hiện nút trên Android
-    btn.style.display = "block";
-
-    let installEvent = null;
-
-    // Nhận sự kiện cài đặt từ Chrome
-    window.addEventListener("beforeinstallprompt", function(e) {
-        e.preventDefault();
-        installEvent = e;
-    });
-
-    // Khi nhấn nút
-    btn.addEventListener("click", async function() {
-
-        if (installEvent) {
-            installEvent.prompt();
-
-            const result = await installEvent.userChoice;
-
-            if (result.outcome === "accepted") {
-                btn.style.display = "none";
-            }
-
-            installEvent = null;
-
-        } else {
-            alert(
-                "CÀI ĐẶT ỨNG DỤNG:\n\n" +
-                "Mở Chrome, nhấn dấu ⋮ ở góc trên bên phải " +
-                "và chọn Cài đặt ứng dụng hoặc Thêm vào màn hình chính."
-            );
-        }
-    });
-
-    // Cài đặt thành công
-    window.addEventListener("appinstalled", function() {
-        btn.style.display = "none";
-        installEvent = null;
-    });
-
-})();
 </script>
 
 </body>
-
 </html>
 
 
